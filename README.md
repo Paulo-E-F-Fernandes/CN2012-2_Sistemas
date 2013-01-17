@@ -5,4 +5,4 @@ Este repositório foi criado para a realização do trabalho da disciplina de Co
 
 O tema do trabalho é Resoluções de Sistemas.
 
-git@github.com:Paulo13/CN2013_Sistemas.git
+git@github.com:Paulo13/CN2012-2_Sistemas.git
