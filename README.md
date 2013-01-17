@@ -1,4 +1,4 @@
-CN2013_Sistemas
+CN2012-2_Sistemas
 ===============
 
 Este repositório foi criado para a realização do trabalho da disciplina de Computação Numérica.
