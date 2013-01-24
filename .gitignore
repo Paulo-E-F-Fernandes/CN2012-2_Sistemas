@@ -1,0 +1,7 @@
+#arquivos que nao sao atualizados
+build.xml
+build
+dist
+manifest.mf
+nbproject
+bin
