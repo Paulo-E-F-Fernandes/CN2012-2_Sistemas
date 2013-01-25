@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
- * http://docs.oracle.com/javase/tutorial/uiswing/components/frame.html
+ * @see http://docs.oracle.com/javase/tutorial/uiswing/components/frame.html
  * @author pargles
  * @version 1.0
  */
@@ -16,7 +16,7 @@ import javax.swing.*;
 public final class Interface extends JFrame{
     private final Matriz matrizPrincipal;
     private ResolucaoSistemas solucao;
-    private enum metodo{Todos, Gauss,Cholesky,LU,Jacobi,Seide;}
+    private enum metodo{Todos, Gauss,Cholesky,LU,Jacobi,Seidel;}
     private String tipoMetodo ="Todos";//default
     private JComboBox listaMetodos;//para colocar os metodos
     private JTextField[] entradas;//contem os botoes da matriz 3x3 do jogo
@@ -49,7 +49,7 @@ public final class Interface extends JFrame{
     public void insereBotoesNoLayout() {
         for (int i = 0; i < linhas*colunas; i++) {
             entradas[i] = new JTextField();
-            entradas[i].setText("    ");
+            entradas[i].setText("");//nao pode ter espaco, senao da problema no parseInt
             painelMatriz.add(entradas[i]);//adiciona o campo de texto no painel das jogadas
         }
     }
@@ -60,7 +60,7 @@ public final class Interface extends JFrame{
      */
     public void limparEntradasMatriz() {
         for (int i = 0; i < linhas*colunas; i++) {
-            entradas[i].setText("    ");
+            entradas[i].setText("");///nao pode ter espaco, senao da problema no parseInt
          }
     }
 
@@ -98,7 +98,7 @@ public final class Interface extends JFrame{
         //textErro.setVisible(false);
 
         listaMetodos = new JComboBox();
-        listaMetodos.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Todos", "Gauss","Cholesky","LU","Jacobi","Seide"}));
+        listaMetodos.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Todos", "Gauss","Cholesky","LU","Jacobi","Seidel"}));
         //listaAlgoritmos.addActionListener(new selecionaMetodo());
 
         painelConfiguracoes.add(labelLinhas);
@@ -122,14 +122,14 @@ public final class Interface extends JFrame{
    */
     public class botaoIniciar implements ActionListener {
 
-        private int[][] m;//matriz temporaria para pegar os valores dos campos de texto
+        
 
         public void actionPerformed(ActionEvent e) {
-
+            int[][] m= new int[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
             int k = 0;
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
-                    m[i][j] = Integer.parseInt(entradas[k].getText());
+                    m[i][j]=Integer.parseInt(entradas[k].getText());
                     k++;
                 }
             }

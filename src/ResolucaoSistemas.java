@@ -5,7 +5,7 @@
 public class ResolucaoSistemas {
     
     private Matriz matriz;
-    private enum metodos{Todos, Gauss,Cholesky,LU,Jacobi,Seide;}
+    private enum metodos{Todos, Gauss,Cholesky,LU,Jacobi,Seidel;}
     private Gauss ga;
     //private Cholesky cho;
     //private LU lu;
@@ -57,8 +57,8 @@ public class ResolucaoSistemas {
  * @param String metodo
  * @return int[] vetor com os resultados de x
  */
-    public int[] executar(String metodo) {
-        int[] temp = {2, 2};
+    public double[] executar(String metodo) {
+        double[] temp = {2, 2};
         switch (metodos.valueOf(metodo)) {
             case Gauss:
                 temp = ga.executar(matriz);
@@ -80,7 +80,7 @@ public class ResolucaoSistemas {
         switch (metodos.valueOf(metodo)) {
             case Jacobi:
                 break;
-            case Seide:
+            case Seidel:
                 break;
         }
         return temp;

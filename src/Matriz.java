@@ -4,18 +4,18 @@
  * @version 1.0
  */
 public class Matriz {
-    private int linhas;
-    private int colunas;
-    private int matriz[][];
-    private int coeficientes[];
+    public int linhas;
+    public int colunas;
+    public double matriz[][];
+    private double coeficientes[];
     private String solucao;//string utilizada para ver se sistema tem unica solucao, infinitas ou é impossível
 
     //metodo construtor
     public Matriz(int linhas, int colunas){
         this.linhas = linhas;
         this.colunas = colunas;
-        matriz = new int [linhas][colunas];//matriz e separa dos coeficientes pois necessario efetuar calculos apenas com ela
-        coeficientes=new int[linhas];//coeficientes separados
+        matriz = new double [linhas][colunas];//matriz e separa dos coeficientes pois necessario efetuar calculos apenas com ela
+        coeficientes=new double[linhas];//coeficientes separados
 
     }
 
