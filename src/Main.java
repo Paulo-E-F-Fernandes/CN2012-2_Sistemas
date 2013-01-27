@@ -16,6 +16,7 @@ public class Main {
         frame.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);//torna visivel a interface
+        
 }
     /**
      * Seleciona o padrão de visualização da interface GUI

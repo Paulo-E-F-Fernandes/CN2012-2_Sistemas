@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -192,7 +193,5 @@ public final class Interface extends JFrame{
     public void mensagemInfinitasSolucoes() {
         JOptionPane.showMessageDialog(null, " Sistema possui INFINITAS solucoes (SLCI)!");
     }
-
-
 
 }
