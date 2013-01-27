@@ -134,9 +134,9 @@ public final class Interface extends JFrame{
                 }
             }
             matrizPrincipal.setMatriz(m);
-            if (matrizPrincipal.tipoSolucao().compareTo("infinitas") != 0) {
+            if (matrizPrincipal.tipoSolucao().compareTo("SLCI") != 0) {
                 mensagemInfinitasSolucoes();
-            } else if (matrizPrincipal.tipoSolucao().compareTo("nenhuma") != 0) {
+            } else if (matrizPrincipal.tipoSolucao().compareTo("SLI") != 0) {
                 mensagemSemSolucao();
             } else {
                 solucao = new ResolucaoSistemas(matrizPrincipal);
@@ -182,7 +182,7 @@ public final class Interface extends JFrame{
      * @return void
      */
     public void mensagemSemSolucao() {
-        JOptionPane.showMessageDialog(null, " Sistema nao possui SOLUCAO !");
+        JOptionPane.showMessageDialog(null, " Sistema nao possui SOLUCAO (SLI)!");
     }
 
     /* metodo que abre uma mensagem indicando que existem infinitas solucoes
@@ -190,7 +190,7 @@ public final class Interface extends JFrame{
      * @return void
      */
     public void mensagemInfinitasSolucoes() {
-        JOptionPane.showMessageDialog(null, " Sistema possui INFINITAS solucoes !");
+        JOptionPane.showMessageDialog(null, " Sistema possui INFINITAS solucoes (SLCI)!");
     }
 
 

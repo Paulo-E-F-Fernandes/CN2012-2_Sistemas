@@ -9,7 +9,7 @@ import javax.swing.UIManager;
  */
 public class Main {
     public static void main(String[] args) {
-        selecionarInterface(0);
+    	selecionarInterface(0);
         JFrame frame = new Interface();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack(); //ajusta o tamanho da janela ao dos componentes

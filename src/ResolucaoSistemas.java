@@ -29,7 +29,7 @@ public class ResolucaoSistemas {
         //sistema = new EstruturaDados();
         //sistema.set(arquivo.lerArquivo(args[1]));
 
-        Verificador verificador = new Verificador();
+//        Verificador verificador = new Verificador();
         //tipoSistema = verificador.executar(sistema.get());
 
         //if (tipoSistema.compareTo("Sistema Linear Incompatível") == 0) {
