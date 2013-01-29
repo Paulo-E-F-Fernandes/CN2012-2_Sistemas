@@ -26,7 +26,7 @@ public final class Interface extends JFrame{
     private JTextField textVetorInicial,textErro;
     private JSpinner spinnerLinhas,spinnerColunas;
     private JRadioButton gauss, lu,cholesky,jacobi,seidel;
-    private int linhas,colunas;
+    private Integer linhas,colunas;
     private double[] resultado;
     private JFileChooser chooserFile;
     
@@ -261,8 +261,8 @@ public final class Interface extends JFrame{
         public void actionPerformed(ActionEvent e) {
             
             Dimension boardSize = new Dimension(200, 200);
-            linhas = (int) spinnerLinhas.getValue();
-            colunas = (int) spinnerColunas.getValue();
+            linhas =  (Integer) spinnerLinhas.getValue();
+            colunas =  (Integer) spinnerColunas.getValue();
             matrizPrincipal = new Matriz(linhas,colunas);
             frameMatriz = new JFrame("matriz");
             //frameMatriz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -288,8 +288,9 @@ public final class Interface extends JFrame{
    * @return void
    */
     public class botaoAbrirArquivo implements ActionListener {
-        double[][] m= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
+        
         public void actionPerformed(ActionEvent e) {
+            double[][] m= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
             chooserFile = new JFileChooser();
             final ExtensionFileFilter filter = new ExtensionFileFilter();  
             filter.adicionarExtensao(".csv");  
