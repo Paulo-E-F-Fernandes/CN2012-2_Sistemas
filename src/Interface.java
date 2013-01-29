@@ -6,14 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 /**
  * @see http://docs.oracle.com/javase/tutorial/uiswing/components/frame.html
+ * @see http://docs.oracle.com/javase/1.4.2/docs/api/java/text/DecimalFormat.html
+ * @see http://www.univasf.edu.br/~max.santana/arquivos/poo_2008.2/laboratorio06_formatandosaida.pdf
  * @author pargles
- * @version 3.0
+ * @version 5.0
  */
 public final class Interface extends JFrame{
     private Matriz matrizPrincipal;
@@ -193,16 +196,17 @@ public final class Interface extends JFrame{
                 frameResultados.pack(); //ajusta o tamanho da janela ao dos componentes
                 frameResultados.setVisible(true);//torna visivel a interface
 
-            //}
-            iniciar.setVisible(false);//ja mostrou o resultado, necessario configurar outra matriz para iniciar novamente
             }
+            iniciar.setVisible(false);//ja mostrou o resultado, necessario configurar outra matriz para iniciar novamente
+            
         }
         
 
         private void criarTelaResultados() {
-            Dimension boardSize = new Dimension(300, 200);
+            Dimension boardSize = new Dimension(400, 200);
             frameResultados = new JFrame("Resultados");
-            frameResultados.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
+            //frameResultados.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
+            frameResultados.setLocationRelativeTo(painelConfiguracoes);
             frameResultados.setLocationRelativeTo(null);
             painelResultados = new JPanel();
             painelResultados.setPreferredSize(boardSize);
@@ -241,11 +245,16 @@ public final class Interface extends JFrame{
         
         private void adicionarResultados(double vetor[], int numeroMetodo)
         {
+            NumberFormat format = NumberFormat.getInstance();//instancia o formatador de numeros
+            format.setMaximumFractionDigits(4);
+            format.setMaximumIntegerDigits(6);
+            String formatado;//string que serve para colocar o numero formtado
             int j =0;
             Double aux;
             for (int i = numeroMetodo+5; i < (linhas+1)*5; i+=5) {
                 aux = vetor[j];j++;
-                resultados[i].setText(aux.toString());
+                formatado = format.format(aux);
+                resultados[i].setText(formatado);
             }
             
         }
@@ -287,8 +296,7 @@ public final class Interface extends JFrame{
    * @param void
    * @return void
    */
-    public class botaoAbrirArquivo implements ActionListener {
-        
+    public class botaoAbrirArquivo implements ActionListener {     
         public void actionPerformed(ActionEvent e) {
             double[][] m= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
             chooserFile = new JFileChooser();

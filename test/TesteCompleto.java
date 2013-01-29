@@ -1,5 +1,4 @@
 import junit.framework.TestCase;
-import org.junit.Assert;
 /*
  *@version 1.0
  * @author pargles
@@ -68,12 +67,6 @@ public class TesteCompleto extends TestCase {
         assertEquals("SLI",m6.verificador());
     }
     
-    public void testaunit()
-    {
-        assertEquals("teste","teste");
-    }
-    
-
     /* assert que compara vetores de float ou double somente estara 
      * disponivel na proxima versao 
      * do JUnit, por isso foi necessario implementa-lo
