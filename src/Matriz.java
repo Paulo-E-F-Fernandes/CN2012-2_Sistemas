@@ -1,22 +1,31 @@
 /**
  *
  * @author pargles
- * @version 1.0
+ * @version 3.0
  */
 public class Matriz {
     public int linhas;
     public int colunas;
+    public double matrizAmpliada[][];
     public double matriz[][];
     public double coeficientes[];
     private String solucao;//string utilizada para ver se sistema tem unica solucao, infinitas ou é impossível
 
+    public Matriz(int linhas,int colunas, double[][] vetor)
+    {
+        this.linhas = linhas;
+        this.colunas = colunas;
+        matrizAmpliada = new double [linhas][colunas];
+        coeficientes=new double[linhas];//coeficientes separados 
+        setMatrizAmpliada(vetor);
+    }
+    
     //metodo construtor
     public Matriz(int linhas, int colunas){
         this.linhas = linhas;
         this.colunas = colunas;
-        matriz = new double [linhas][colunas];//matriz e separa dos coeficientes pois necessario efetuar calculos apenas com ela
-        coeficientes=new double[linhas];//coeficientes separados
-        
+        matrizAmpliada = new double [linhas][colunas];//matriz e separa dos coeficientes pois necessario efetuar calculos apenas com ela
+        coeficientes=new double[linhas];//coeficientes separados       
     }
 
     public Matriz()
@@ -24,7 +33,7 @@ public class Matriz {
         //construtor vazio
     }
 
-    /* metodo que transpoe a matriz
+    /* metodo que transpoe a matrizAmpliada
      * @param void
      * @return void
      */
@@ -33,7 +42,7 @@ public class Matriz {
 
     }
 
-    /* metodo que retorna a matriz identidade da matriz atual
+    /* metodo que retorna a matrizAmpliada identidade da matrizAmpliada atual
      * @param void
      * @return Matriz identidade
      */
@@ -43,18 +52,8 @@ public class Matriz {
         return identidade;
     }
 
-    /* metodo que retorna se matriz tem solucao unica
-     * infinita ou nao tem solucao
-     * @param void
-     * @return void
-     */
-    public String tipoSolucao()
-    {
-    	this.solucao = this.verificador();
-    	return this.solucao;
-    }
 
-    /* calcula o determinante de uma matriz 2x2
+    /* calcula o determinante de uma matrizAmpliada 2x2
      * exemplo parametro {{2,2},{2,2}}
      * @param int mat2x2
      * @return int determinante
@@ -65,7 +64,7 @@ public class Matriz {
     }
 
 
-    /* metodo que imprime no terminal a matriz ampliada
+    /* metodo que imprime no terminal a matrizAmpliada ampliada
      * @param void
      * @return
      */
@@ -74,7 +73,7 @@ public class Matriz {
 
     }
 
-    /* metodo que seta a dimensao da matriz
+    /* metodo que seta a dimensao da matrizAmpliada
      * @param int linhas e colunas
      * @return void
      */
@@ -85,34 +84,66 @@ public class Matriz {
         matriz = new double [linhas][colunas];
     }
 
-    public void setMatriz(int[][]m)
+    public void setMatrizAmpliada(double[][]m)
     {
         for(int i =0;i<linhas;i++)
         {
-        	for (int j = 0; j < this.colunas; j++) {
-        		this.matriz[i][j] = m[i][j];
-        	}
-            //System.arraycopy(m[i], 0, this.matriz[i], 0, colunas);
+            System.arraycopy(m[i], 0, this.matrizAmpliada[i], 0, colunas);
+        }
+        setCoeficientes();//coloca os coeficientes em um vetor separado
+        setMatriz();//separa a matriz sem os coeficientes
+    }
+    
+    /* metodo privado que seta automaticamente a matriz sem coeficientes
+     * @param void
+     * @retur void
+     */
+    private void setMatriz()
+    {
+        matriz = new double[linhas][colunas-1];
+        for(int i=0;i<linhas;i++)
+        {
+            System.arraycopy(matrizAmpliada[i], 0, matriz[i], 0, colunas-1);//nao coloca a ultima coluna, por isso colunas-1
         }
     }
     
-    public void setCoeficientes(int []m) {
-    	for (int i = 0; i < linhas; i++) {
-    		this.coeficientes[i] = m[i];
-    	}
+     /* metodo privado que seta automaticamente os coeficientes
+     * @param void
+     * @return void
+     */
+    private void setCoeficientes()
+    {
+        coeficientes = new double[linhas];
+        for(int i = 0;i<linhas;i++)
+        {
+            coeficientes[i]= matrizAmpliada[i][colunas-1];
+        }
     }
-
+    
     /* metodo que retorna o vetor de coeficientes
      * @param void
      * @return int[] matrizCoeficientes
      */
-    public int[] matrizCoeficientes()
+    public double[] getCoeficientes()
     {
-        int v[] = {2,2};
-        return v;
+        return coeficientes;
     }
     
-    private String verificador() {
+    /* metodo que retorna a matriz sem os coeficientes
+     * @param void
+     * @return double[][] matriz
+     */
+    public double[][] getMatriz()
+    {
+        return matriz;
+    }
+    
+        /* metodo que retorna se matrizAmpliada tem solucao unica
+     * infinita ou nao tem solucao
+     * @param void
+     * @return void
+     */
+    public String verificador() {
     	double fatorMult = 0;
 		int i, j;
 		
@@ -136,7 +167,7 @@ public class Matriz {
 				return "SLI";
 			}
 		}
-		return "SLCI";
+		return "SLCI";///====>>> coloca um comentario informando oq qer dizer as siglas
 	}
     
     private double divisor(double valor1, double valor2) {

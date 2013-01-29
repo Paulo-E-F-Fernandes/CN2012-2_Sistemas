@@ -23,16 +23,16 @@ public class LU {
         {
             for(int j=i+1;i<matriz.linhas;i++)
             {
-                double div = matriz.matriz[i][i]/matriz.matriz[j][i];
+                double div = matriz.matrizAmpliada[i][i]/matriz.matrizAmpliada[j][i];
                 for(int k=i+1;k<matriz.colunas;k++)
                 {
-                    matriz.matriz[j][k]=matriz.matriz[j][k]-div*matriz.matriz[i][k];
+                    matriz.matrizAmpliada[j][k]=matriz.matrizAmpliada[j][k]-div*matriz.matrizAmpliada[i][k];
                 }
             }
         }
         for(int i=0;i<matriz.linhas;i++)
         {
-            resultado[i]= matriz.matriz[i][matriz.colunas-1];
+            resultado[i]= matriz.matrizAmpliada[i][matriz.colunas-1];
         }
         return resultado;
     }

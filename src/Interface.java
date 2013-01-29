@@ -1,42 +1,43 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * @see http://docs.oracle.com/javase/tutorial/uiswing/components/frame.html
  * @author pargles
- * @version 1.0
+ * @version 3.0
  */
-
-
 public final class Interface extends JFrame{
-    private final Matriz matrizPrincipal;
+    private Matriz matrizPrincipal;
     private ResolucaoSistemas solucao;
-    private enum metodo{Todos, Gauss,Cholesky,LU,Jacobi,Seidel;}
-    private String tipoMetodo ="Todos";//default
-    private JComboBox listaMetodos;//para colocar os metodos
-    private JTextField[] entradas;//contem os botoes da matriz 3x3 do jogo
-    private JButton iniciar,gerar;
-    private JLabel labelColunas,labelLinhas,labelErro,labelVetorInicial,labelMetodo;
-    private JPanel painelMatriz,painelConfiguracoes;
-    private JFrame frameMatriz;
-    private JTextField textLinhas,textColunas,textVetorInicial,textErro;
+    private JTextField[] entradas;//contem os botoes da matriz de entrada
+    private JLabel[] resultados;//vetor de labels que contem os resultados
+    private JButton iniciar,gerar,abrirArquivo;
+    private JPanel painelMatriz,painelConfiguracoes,painelResultados;
+    private JFrame frameMatriz,frameResultados;
+    private JTextField textVetorInicial,textErro;
+    private JSpinner spinnerLinhas,spinnerColunas;
+    private JRadioButton gauss, lu,cholesky,jacobi,seidel;
     private int linhas,colunas;
-    //Velha jogoDaVelha;
+    private double[] resultado;
+    private JFileChooser chooserFile;
     
   //metodo construtor
   public Interface()
   {
 
-      matrizPrincipal = new Matriz();
+      //matrizPrincipal = new Matriz();
       setTitle("Sistemas");
       painelConfiguracoes = new JPanel();
-      painelConfiguracoes.setLayout(new GridLayout(12,0));// 12 botoes verticalmente
+      painelConfiguracoes.setLayout(new GridLayout(17,0));// 17 botoes verticalmente
       insereConfiguracoes();
       getContentPane().add(painelConfiguracoes, BorderLayout.WEST);
 
@@ -64,8 +65,8 @@ public final class Interface extends JFrame{
             entradas[i].setText("");///nao pode ter espaco, senao da problema no parseInt
          }
     }
-
-    /* metodo que insere todos os botoes no Painel de configuracoes
+    
+     /* metodo que insere todos os botoes no Painel de configuracoes
      * @param void
      * @return void
      */
@@ -76,19 +77,18 @@ public final class Interface extends JFrame{
         iniciar.setVisible(false);
 
         gerar = new JButton("Gerar Matriz");
+        gerar.setFocusable(false);
         gerar.addActionListener(new botaoGerar());
+        
+        abrirArquivo = new JButton("Abrir Arquivo");
+        abrirArquivo.setFocusable(false);
+        abrirArquivo.addActionListener(new botaoAbrirArquivo());
 
-        labelColunas = new JLabel("Colunas:");
-        labelLinhas = new JLabel("Linhas: ");
-        labelErro = new JLabel("Erro: ");
-        labelVetorInicial=new JLabel("Vetor: ");
-        labelMetodo = new JLabel("Metodo: ");
+        spinnerColunas = new JSpinner();
+        spinnerColunas.setValue(5);
 
-        textColunas = new JTextField();
-        textColunas.setText("5");//default
-
-        textLinhas = new JTextField();
-        textLinhas.setText("5");//default
+        spinnerLinhas = new JSpinner();
+        spinnerLinhas.setValue(5);//default
 
         textVetorInicial = new JTextField();
         textVetorInicial.setText("0.2 1.7 5 3.6");
@@ -97,22 +97,48 @@ public final class Interface extends JFrame{
         textErro = new JTextField();
         textErro.setText("0.005");
         //textErro.setVisible(false);
+     
+        gauss = new JRadioButton("Gauss");
+        gauss.setSelected(true);
+        gauss.setMnemonic(KeyEvent.VK_B);
+        gauss.setActionCommand("Gauss");
 
-        listaMetodos = new JComboBox();
-        listaMetodos.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Todos", "Gauss","Cholesky","LU","Jacobi","Seidel"}));
-        //listaAlgoritmos.addActionListener(new selecionaMetodo());
+        lu = new JRadioButton("LU");
+        //lu.setSelected(true);
+        lu.setMnemonic(KeyEvent.VK_B);
+        lu.setActionCommand("LU");
 
-        painelConfiguracoes.add(labelLinhas);
-        painelConfiguracoes.add(textLinhas);
-        painelConfiguracoes.add(labelColunas);
-        painelConfiguracoes.add(textColunas);
+        cholesky = new JRadioButton("Cholesky");
+        //cholesky.setSelected(true);
+        cholesky.setMnemonic(KeyEvent.VK_B);
+        cholesky.setActionCommand("Cholesky");
+        
+        jacobi = new JRadioButton("Jacobi");
+        //jacobi.setSelected(true);
+        jacobi.setMnemonic(KeyEvent.VK_B);
+        jacobi.setActionCommand("Jacobi");
+
+        seidel = new JRadioButton("Seidel");
+        //seidel.setSelected(true);
+        seidel.setMnemonic(KeyEvent.VK_B);
+        seidel.setActionCommand("Seidel");
+                
+        painelConfiguracoes.add(new JLabel("Linhas: "));
+        painelConfiguracoes.add(spinnerLinhas);
+        painelConfiguracoes.add(new JLabel("Colunas:"));
+        painelConfiguracoes.add(spinnerColunas);
+        painelConfiguracoes.add(abrirArquivo);
         painelConfiguracoes.add(gerar);
-        painelConfiguracoes.add(labelMetodo);
-        painelConfiguracoes.add(listaMetodos);
+        painelConfiguracoes.add(new JLabel("Metodo: "));
+        painelConfiguracoes.add(gauss);
+        painelConfiguracoes.add(lu);
+        painelConfiguracoes.add(cholesky);
+        painelConfiguracoes.add(jacobi);
+        painelConfiguracoes.add(seidel);
         painelConfiguracoes.add(iniciar);
-        painelConfiguracoes.add(labelErro);
+        painelConfiguracoes.add(new JLabel("Erro: "));
         painelConfiguracoes.add(textErro);
-        painelConfiguracoes.add(labelVetorInicial);
+        painelConfiguracoes.add(new JLabel("Vetor: "));
         painelConfiguracoes.add(textVetorInicial);        
         //painelConfiguracoes.add(labelVazio);
     }
@@ -123,45 +149,123 @@ public final class Interface extends JFrame{
    */
     public class botaoIniciar implements ActionListener {
 
-        
-
+        @Override
         public void actionPerformed(ActionEvent e) {
-            int[][] m= new int[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
+            double[][] m = new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
             int k = 0;
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
-                    m[i][j]=Integer.parseInt(entradas[k].getText());
+                    m[i][j] = Integer.parseInt(entradas[k].getText());
                     k++;
                 }
             }
-            matrizPrincipal.setMatriz(m);
-            if (matrizPrincipal.tipoSolucao().compareTo("SLCI") != 0) {
+            matrizPrincipal.setMatrizAmpliada(m);
+            if (matrizPrincipal.verificador().compareTo("SLCI") != 0) {
                 mensagemInfinitasSolucoes();
-            } else if (matrizPrincipal.tipoSolucao().compareTo("SLI") != 0) {
+            } else if (matrizPrincipal.verificador().compareTo("SLI") != 0) {
                 mensagemSemSolucao();
             } else {
                 solucao = new ResolucaoSistemas(matrizPrincipal);
-                solucao.executar(tipoMetodo);
-            }
+                criarTelaResultados();
+                //======>>>>AKI TU PODE BOTA TEU LOADING
+                if (gauss.isSelected()) {
+                    resultado = solucao.executar("Gauss");
+                    adicionarResultados(resultado,0);
+                }
+                if (lu.isSelected()) {
+                    resultado = solucao.executar("LU");
+                    adicionarResultados(resultado,1);
+                }
+                if (cholesky.isSelected()) {
+                    resultado = solucao.executar("Cholesky");
+                    adicionarResultados(resultado,2);
+                }
+                if (jacobi.isSelected()) {
+                    resultado = solucao.executar("Jacobi");
+                    adicionarResultados(resultado,3);
+                }
+                if (seidel.isSelected()) {
+                    resultado = solucao.executar("Seidel");
+                    adicionarResultados(resultado,4);
+                }
+                //=====>>>>AKI TU PODE TERMINA TEU LOADING
+                frameResultados.getContentPane().add(painelResultados, BorderLayout.CENTER);
+                frameResultados.pack(); //ajusta o tamanho da janela ao dos componentes
+                frameResultados.setVisible(true);//torna visivel a interface
 
+            //}
+            iniciar.setVisible(false);//ja mostrou o resultado, necessario configurar outra matriz para iniciar novamente
+            }
+        }
+        
+
+        private void criarTelaResultados() {
+            Dimension boardSize = new Dimension(300, 200);
+            frameResultados = new JFrame("Resultados");
+            frameResultados.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
+            frameResultados.setLocationRelativeTo(null);
+            painelResultados = new JPanel();
+            painelResultados.setPreferredSize(boardSize);
+            //painelResultados.setBackground(Color.black);
+            painelResultados.setLayout(new GridLayout(linhas+1, 5));//5 e o numero de metodos
+            limparResultados();
+        }
+
+        /* metodo que cria os campos vazios dos resultados
+         * @param void
+         * @return void
+         */
+        private void limparResultados() {
+            resultados = new JLabel[(linhas+1) * 5];//cria um vetor de campos de texto do tamanho da matriz
+            resultados[0] = new JLabel();
+            resultados[0].setText("  Gauss ");
+            painelResultados.add(resultados[0]);//adiciona o campo de texto no painel das jogadas
+            resultados[1] = new JLabel();
+            resultados[1].setText("Cholesky");
+            painelResultados.add(resultados[1]);//adiciona o campo de texto no painel das jogadas
+            resultados[2] = new JLabel();
+            resultados[2].setText("    LU  ");
+            painelResultados.add(resultados[2]);//adiciona o campo de texto no painel das jogadas
+            resultados[3] = new JLabel();
+            resultados[3].setText(" Jacobi ");
+            painelResultados.add(resultados[3]);//adiciona o campo de texto no painel das jogadas
+            resultados[4] = new JLabel();
+            resultados[4].setText(" Seidel ");
+            painelResultados.add(resultados[4]);//adiciona o campo de texto no painel das jogadas
+            for (int i = 5; i < (linhas+1) * 5; i++) {//6 e a quantidade de metodos e linhas e a quantidade d resultados X's
+                resultados[i] = new JLabel();
+                resultados[i].setText("00000000");
+                painelResultados.add(resultados[i]);//adiciona o campo de texto no painel das jogadas
+            }
+        }
+        
+        private void adicionarResultados(double vetor[], int numeroMetodo)
+        {
+            int j =0;
+            Double aux;
+            for (int i = numeroMetodo+5; i < (linhas+1)*5; i+=5) {
+                aux = vetor[j];j++;
+                resultados[i].setText(aux.toString());
+            }
+            
         }
     }
+    
+  
 
    /* classe para o evento que cuida do botao gerar
    * @param void
    * @return void
    */
     public class botaoGerar implements ActionListener {
-        
-
         public void actionPerformed(ActionEvent e) {
             
             Dimension boardSize = new Dimension(200, 200);
-            linhas = Integer.parseInt(textLinhas.getText());
-            colunas = Integer.parseInt(textColunas.getText());
-            matrizPrincipal.setDimensao(linhas, colunas);
+            linhas = (int) spinnerLinhas.getValue();
+            colunas = (int) spinnerColunas.getValue();
+            matrizPrincipal = new Matriz(linhas,colunas);
             frameMatriz = new JFrame("matriz");
-            frameMatriz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            //frameMatriz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frameMatriz.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
             frameMatriz.setLocationRelativeTo(null);
             painelMatriz = new JPanel();
@@ -177,8 +281,42 @@ public final class Interface extends JFrame{
                         
         }
     }
-
-    /* metodo que abre uma mensagem indicando que nao ha solucao
+    
+    
+   /* classe para o evento que cuida do botao abrirArquivo
+   * @param void
+   * @return void
+   */
+    public class botaoAbrirArquivo implements ActionListener {
+        double[][] m= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
+        public void actionPerformed(ActionEvent e) {
+            chooserFile = new JFileChooser();
+            final ExtensionFileFilter filter = new ExtensionFileFilter();  
+            filter.adicionarExtensao(".csv");  
+            filter.adicionarExtensao(".txt");  
+            chooserFile.setFileFilter( filter ); 
+            int retorno = chooserFile.showOpenDialog(null);
+            if(retorno == JFileChooser.APPROVE_OPTION)//se a pessoa clicar em cancelar nao vai fazer nada pois nao tem um else definido
+            {
+                File arquivo = chooserFile.getSelectedFile();// =====>>>> AGORA E CONTIGO PAULO, TENS QUE LER DO ARQUIVO E LARGAR NA MATRIZ, COMO LAH NO BOTAO INICIAR, DIVIRTA-SE
+                //colunas =
+                //linhas = setar as variaveis globais
+                //spinnerLinhas.setValue(linhas);//======>AKI TENS QUE SETAR O NUMERO DE LINHAS DO SPINNER E ABAIXO SETAR O NUMERO DE COLUNAS
+                //spinnerColunas.setValue(colunas);
+                matrizPrincipal.setMatrizAmpliada(m);//depois de todos os valores armazenados ma matriz temporaria m, setar a matriz no objeto Matriz
+                painelMatriz = new JPanel();
+                for (int i = 0; i < linhas*colunas; i++) {
+                    entradas[i] = new JTextField();
+                    entradas[i].setText("");//==>>aki tens de colocar o valor de cada posicao da matriz
+                    painelMatriz.add(entradas[i]);//adiciona o campo de texto no painel das jogadas
+                }
+                gerar.doClick();//depois de colocado o valor de cada posicao da matriz ele continua como se fosse um clique no botao gerarmatriz
+                
+            }
+        }
+   }
+    
+     /* metodo que abre uma mensagem indicando que nao ha solucao
      * @param void
      * @return void
      */
@@ -194,4 +332,36 @@ public final class Interface extends JFrame{
         JOptionPane.showMessageDialog(null, " Sistema possui INFINITAS solucoes (SLCI)!");
     }
 
+     
+ /* classe que extende a classe FileFilter
+  * para definir as extensoes de arquivos que
+  * poderao ser abertas pelo programa
+  */
+    public class ExtensionFileFilter extends FileFilter {
+        private ArrayList<String> extensions = new ArrayList<String>();  // array que vai conter as extensoes possiveis
+        private void adicionarExtensao(String tipo) {
+            if (!tipo.startsWith(".")) {
+                tipo = "." + tipo;
+            }
+
+            extensions.add(tipo);
+        }
+        @Override
+        public boolean accept(File f) {
+            if (f.isDirectory()) {
+                return true;//aceita diretorios
+            }
+            String name = f.getName().toLowerCase();//pega o nome do arquivo selecionado e passa para minusculo  
+            for (String extension : extensions) {//for each no array de extensoes
+                if (name.endsWith(extension)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        @Override
+        public String getDescription() {
+            return "Arquivos contendo dados";
+        }
+    }
 }
