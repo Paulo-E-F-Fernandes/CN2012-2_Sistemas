@@ -163,16 +163,22 @@ public final class Interface extends JFrame{
                 }
             }
             matrizPrincipal.setMatrizAmpliada(m);
-            if (matrizPrincipal.verificador().compareTo("SLCI") != 0) {
+            matrizPrincipal.setSolucao();
+            System.out.println(matrizPrincipal.getSolucao());
+            if (matrizPrincipal.getSolucao().compareTo("SLCI") == 0) {
                 mensagemInfinitasSolucoes();
-            } else if (matrizPrincipal.verificador().compareTo("SLI") != 0) {
+            } else if (matrizPrincipal.getSolucao().compareTo("SLI") == 0) {
                 mensagemSemSolucao();
             } else {
                 solucao = new ResolucaoSistemas(matrizPrincipal);
                 criarTelaResultados();
-                //======>>>>AKI TU PODE BOTA TEU LOADING
+                
+                Loading loading = new Loading();
+                Thread loadingThread = new Thread(loading);
+                loadingThread.start();
+                
                 if (gauss.isSelected()) {
-                    resultado = solucao.executar("Gauss");
+                	resultado = solucao.executar("Gauss");
                     adicionarResultados(resultado,0);
                 }
                 if (lu.isSelected()) {
@@ -191,7 +197,7 @@ public final class Interface extends JFrame{
                     resultado = solucao.executar("Seidel");
                     adicionarResultados(resultado,4);
                 }
-                //=====>>>>AKI TU PODE TERMINA TEU LOADING
+                loading.exit();
                 frameResultados.getContentPane().add(painelResultados, BorderLayout.CENTER);
                 frameResultados.pack(); //ajusta o tamanho da janela ao dos componentes
                 frameResultados.setVisible(true);//torna visivel a interface
@@ -298,7 +304,7 @@ public final class Interface extends JFrame{
    */
     public class botaoAbrirArquivo implements ActionListener {     
         public void actionPerformed(ActionEvent e) {
-            double[][] m= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
+        	double[][] m;//= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
             chooserFile = new JFileChooser();
             final ExtensionFileFilter filter = new ExtensionFileFilter();  
             filter.adicionarExtensao(".csv");  
@@ -307,12 +313,16 @@ public final class Interface extends JFrame{
             int retorno = chooserFile.showOpenDialog(null);
             if(retorno == JFileChooser.APPROVE_OPTION)//se a pessoa clicar em cancelar nao vai fazer nada pois nao tem um else definido
             {
-                File arquivo = chooserFile.getSelectedFile();// =====>>>> AGORA E CONTIGO PAULO, TENS QUE LER DO ARQUIVO E LARGAR NA MATRIZ, COMO LAH NO BOTAO INICIAR, DIVIRTA-SE
+            	System.out.println(chooserFile.getSelectedFile().toString());
+                System.exit(0);
+            	//File arquivo = chooserFile.getSelectedFile();// =====>>>> AGORA E CONTIGO PAULO, TENS QUE LER DO ARQUIVO E LARGAR NA MATRIZ, COMO LAH NO BOTAO INICIAR, DIVIRTA-SE
+                
+                
                 //colunas =
                 //linhas = setar as variaveis globais
                 //spinnerLinhas.setValue(linhas);//======>AKI TENS QUE SETAR O NUMERO DE LINHAS DO SPINNER E ABAIXO SETAR O NUMERO DE COLUNAS
                 //spinnerColunas.setValue(colunas);
-                matrizPrincipal.setMatrizAmpliada(m);//depois de todos os valores armazenados ma matriz temporaria m, setar a matriz no objeto Matriz
+                //matrizPrincipal.setMatrizAmpliada(m);//depois de todos os valores armazenados ma matriz temporaria m, setar a matriz no objeto Matriz
                 painelMatriz = new JPanel();
                 for (int i = 0; i < linhas*colunas; i++) {
                     entradas[i] = new JTextField();

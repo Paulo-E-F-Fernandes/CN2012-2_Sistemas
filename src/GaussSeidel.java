@@ -1,5 +1,5 @@
 
-public class GaussSeidel extends TesteParada {
+public class GaussSeidel extends GaussJacobi {
 	// PAULO, já deixei criada está classe para já deixar herdado
 	// o método de parada que tu vai usar também.
 	//

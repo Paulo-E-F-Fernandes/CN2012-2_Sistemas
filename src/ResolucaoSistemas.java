@@ -27,10 +27,7 @@ public class ResolucaoSistemas {
  */
     public double[] executar(String metodo) {
         double[] temp = {2, 2};
-        Loading loading = new Loading();
-        Thread loadingThread = new Thread(loading);
         
-        loadingThread.start();
         switch (metodos.valueOf(metodo)) {
             case Gauss:
                 temp = ga.executar(matriz);
@@ -41,7 +38,7 @@ public class ResolucaoSistemas {
             case LU:
                 break;
         }
-        loading.exit();
+        
         return temp;
     }
     /* metodo que vai executar os metodos iterativos que precisam tbem de um vetor
@@ -50,17 +47,14 @@ public class ResolucaoSistemas {
      */
     public int[] executar(String metodo, int[]vetor) {
         int[] temp = {2, 2};
-        Loading loading = new Loading();
-        Thread loadingThread = new Thread(loading);
         
-        loadingThread.start();
         switch (metodos.valueOf(metodo)) {
             case Jacobi:
                 break;
             case Seidel:
                 break;
         }
-        loading.exit();
+        
         return temp;
     }
 }

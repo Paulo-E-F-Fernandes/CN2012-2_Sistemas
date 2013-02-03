@@ -25,7 +25,7 @@ public class Loading extends JFrame implements Runnable {
 		this.setResizable(false);
 		this.setSize(220, 100);
 		this.setVisible(true);
-                this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
 	}
 	
 	public void exit() {

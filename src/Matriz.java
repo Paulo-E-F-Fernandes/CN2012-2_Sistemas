@@ -138,7 +138,15 @@ public class Matriz {
         return matriz;
     }
     
-        /* metodo que retorna se matrizAmpliada tem solucao unica
+    public void setSolucao() {
+    	this.solucao = this.verificador();
+    }
+    
+    public String getSolucao() {
+    	return this.solucao;
+    }
+    
+    /* metodo que retorna se matrizAmpliada tem solucao unica
      * infinita ou nao tem solucao
      * @param void
      * @return void
@@ -146,7 +154,7 @@ public class Matriz {
     public String verificador() {
     	boolean flag;
     	double fatorMult;
-    	System.out.println(this.linhas+" - "+this.colunas);
+    	
     	for (int i = 0; i < (this.linhas - 1); i++) {
     		for (int j = i + 1; j < this.linhas; j++) {
     			fatorMult = (this.matriz[j][0] / this.matriz[i][0]);
@@ -161,15 +169,15 @@ public class Matriz {
     			}
     			if (flag) {
     				if (fatorMult == (this.coeficientes[j] / this.coeficientes[i])) {
-    					return "SLCI";
+    					return "SLCI";	// Sistema Linear Compatível Indeterminado
     				}
     				else {
-    					return "SLI";
+    					return "SLI";	// Sistema Linear Incompatível
     				}
     			}
     		}
     	}
-    	return "SLCD";
+    	return "SLCD";	// Sistema Linear Compatível Determinado
     }
 
 }
