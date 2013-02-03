@@ -144,41 +144,32 @@ public class Matriz {
      * @return void
      */
     public String verificador() {
-    	double fatorMult = 0;
-		int i, j;
-		
-		if (matriz[0][0] > matriz[1][0]) {
-			fatorMult = this.divisor(matriz[0][0], matriz[1][0]);
-		}
-		else {
-			fatorMult = this.divisor(matriz[1][0], matriz[0][0]);
-		}
-		
-		for (j = 0; j < colunas; j++) {
-			for (i = 1; i < linhas; i++) {
-				if (this.divisor(matriz[i][j], matriz[i - 1][j]) != fatorMult) {
-					return "SLCD";
-				}
-			}
-		}
-		
-		for (i = 1; i < linhas; i++) {
-			if (this.divisor(coeficientes[i], coeficientes[i - 1]) != fatorMult) {
-				return "SLI";
-			}
-		}
-		return "SLCI";///====>>> coloca um comentario informando oq qer dizer as siglas
-	}
-    
-    private double divisor(double valor1, double valor2) {
-    	valor1 = Math.abs(valor1);
-    	valor2 = Math.abs(valor2);
-    	if (valor1 > valor2) {
-    		return valor1 / valor2;
+    	boolean flag;
+    	double fatorMult;
+    	System.out.println(this.linhas+" - "+this.colunas);
+    	for (int i = 0; i < (this.linhas - 1); i++) {
+    		for (int j = i + 1; j < this.linhas; j++) {
+    			fatorMult = (this.matriz[j][0] / this.matriz[i][0]);
+    			flag = true;
+    			for (int k = 1; k < (this.colunas - 1); k++) {
+    				if (this.matriz[i][k] != 0) {
+    					if (fatorMult != (this.matriz[j][k] / this.matriz[i][k])) {
+    						flag = false;
+    						break;
+    					}
+    				}
+    			}
+    			if (flag) {
+    				if (fatorMult == (this.coeficientes[j] / this.coeficientes[i])) {
+    					return "SLCI";
+    				}
+    				else {
+    					return "SLI";
+    				}
+    			}
+    		}
     	}
-		else {
-			return valor2 / valor1;
-		}
-	}
+    	return "SLCD";
+    }
 
 }
