@@ -153,19 +153,28 @@ public class Matriz {
      */
     public String verificador() {
     	boolean flag;
-    	double fatorMult;
+    	double fatorMult = 0;
     	
     	for (int i = 0; i < (this.linhas - 1); i++) {
     		for (int j = i + 1; j < this.linhas; j++) {
-    			fatorMult = (this.matriz[j][0] / this.matriz[i][0]);
-    			flag = true;
-    			for (int k = 1; k < (this.colunas - 1); k++) {
-    				if (this.matriz[i][k] != 0) {
-    					if (fatorMult != (this.matriz[j][k] / this.matriz[i][k])) {
-    						flag = false;
-    						break;
-    					}
-    				}
+    			if (this.matriz[i][0] != 0) {
+    				fatorMult = (this.matriz[j][0] / this.matriz[i][0]);
+	    			flag = true;
+	    			for (int k = 1; k < (this.colunas - 1); k++) {
+	    				if (this.matriz[i][k] != 0) {
+	    					if (fatorMult != (this.matriz[j][k] / this.matriz[i][k])) {
+	    						flag = false;
+	    						break;
+	    					}
+	    				}
+	    				else {
+	    					flag = false;
+	    					break;
+	    				}
+	    			}
+    			}
+    			else {
+    				flag = false;
     			}
     			if (flag) {
     				if (fatorMult == (this.coeficientes[j] / this.coeficientes[i])) {

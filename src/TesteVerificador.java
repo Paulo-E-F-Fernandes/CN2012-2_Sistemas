@@ -1,6 +1,7 @@
 import junit.framework.TestCase;
 
 public class TesteVerificador extends TestCase {
+	
 	Matriz m1 = new Matriz(5,6,new double[][] {{1.0,1.0,1.0,0.0,2.0,27.0},{0.0,1.0,2.0,1.0,1.0,23.0},{2.0,1.0,1.0,2.0,0.0,31.0},{3.0,2.0,1.0,2.0,1.0,31.0},{2.0,1.0,2.0,3.0,1.0,22.0}});
     Matriz m2 = new Matriz(2,3,new double[][] {{2.0,1.0,3.0},{1.0,-3.0,-2.0}});
     Matriz m3 = new Matriz(4,5,new double[][] {{2.0,2.0,1.0,1.0,7.0},{1.0,-1.0,2.0,-1.0,1.0},{3.0,2.0,-3.0,-2.0,4.0},{4.0,3.0,2.0,1.0,12.0}});
