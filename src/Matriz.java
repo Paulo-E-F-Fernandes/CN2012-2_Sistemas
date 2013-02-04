@@ -37,10 +37,19 @@ public class Matriz {
      * @param void
      * @return void
      */
-    public void transposta()
+    //mudei parametros de entrada e saida..
+    public static double [][] transposta(double Matriz[][])
     {
-
-    }
+        int coluna = 0;//NÃO É ZERO linha recebe numero de colunas da matriz
+        int linha = 0;//NÃO É ZERO coluna recebe numero de linhas da matriz
+        double [][] temp = new double [coluna][linha];
+        for (int i=0; i < linha; ++i){
+            for (int j=0; j < coluna; ++j){
+                temp[j][i] = Matriz [i][j];
+            }
+        }
+        return temp;
+}
 
     /* metodo que retorna a matrizAmpliada identidade da matrizAmpliada atual
      * @param void
