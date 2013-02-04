@@ -96,6 +96,7 @@ public final class Interface extends JFrame{
         textVetorInicial = new JTextField();
         textVetorInicial.setText("0.2 1.7 5 3.6");
         //textVetorInicial.setVisible(false);
+        
 
         textErro = new JTextField();
         textErro.setText("0.005");
@@ -154,8 +155,13 @@ public final class Interface extends JFrame{
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            
             double[][] m = new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
+            double[] vetor = new double[linhas];
             int k = 0;
+            
+            System.out.println(textVetorInicial.getText());
+            
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
                     m[i][j] = Integer.parseInt(entradas[k].getText());

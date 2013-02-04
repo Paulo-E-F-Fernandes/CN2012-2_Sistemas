@@ -9,6 +9,7 @@ public class ResolucaoSistemas {
     private Gauss ga;
     //private Cholesky cho;
     //private LU lu;
+    private GaussJacobi jo;
 
     //metodo construtor
     public ResolucaoSistemas(Matriz m)
@@ -17,6 +18,7 @@ public class ResolucaoSistemas {
         ga = new Gauss();
         //cho= new Cholesky();
         //lu = new LU();
+        jo = new GaussJacobi();
 
     }
 
@@ -26,7 +28,7 @@ public class ResolucaoSistemas {
  * @return int[] vetor com os resultados de x
  */
     public double[] executar(String metodo) {
-        double[] temp = {2, 2};
+        double[] temp = {25, 25};
         
         switch (metodos.valueOf(metodo)) {
             case Gauss:
@@ -45,11 +47,13 @@ public class ResolucaoSistemas {
      * @param String metodo, int[] vetor
      * @return int[] resultado
      */
-    public int[] executar(String metodo, int[]vetor) {
-        int[] temp = {2, 2};
+    public double[] executar(String metodo, int[]vetor) {
+        double[] temp = {21, 21};
         
         switch (metodos.valueOf(metodo)) {
             case Jacobi:
+                System.out.println(temp.length);
+                temp = jo.executa(matriz, vetor);
                 break;
             case Seidel:
                 break;
