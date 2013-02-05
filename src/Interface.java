@@ -111,7 +111,7 @@ public final class Interface extends JFrame{
         spinnerLinhas.setValue(5);//default
 
         textVetorInicial = new JTextField();
-        textVetorInicial.setText("0.2 1.7 5 3.6");
+        textVetorInicial.setText("0.2, 1.7, 5, 3.6");
         //textVetorInicial.setVisible(false);
 
         textErro = new JTextField();
@@ -185,6 +185,7 @@ public final class Interface extends JFrame{
             String stringIn = textVetorInicial.getText();
             StringTokenizer tokens =new StringTokenizer(stringIn,",");//separa os tokens por virgulas
             int y = 0;
+            vetorAuxiliar = new double[linhas];
             while(tokens.hasMoreElements())
             {
                 vetorAuxiliar[y++]= Double.parseDouble(tokens.nextToken());
