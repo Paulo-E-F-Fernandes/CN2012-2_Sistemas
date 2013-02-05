@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileFilter;
  */
 public final class Interface extends JFrame{
     private Matriz matrizPrincipal;
+    private double erro,vetorAuxiliar[];
     private double[][] matrizArquivo;
     private ResolucaoSistemas solucao;
     private JTextField[] entradas;//contem os botoes da matriz de entrada
@@ -180,7 +181,15 @@ public final class Interface extends JFrame{
             }
             matrizPrincipal.setMatrizAmpliada(m);
             matrizPrincipal.setSolucao();
-            System.out.println(matrizPrincipal.getSolucao());
+            erro = Double.parseDouble(textErro.getText());
+            String stringIn = textVetorInicial.getText();
+            StringTokenizer tokens =new StringTokenizer(stringIn,",");//separa os tokens por virgulas
+            int y = 0;
+            while(tokens.hasMoreElements())
+            {
+                vetorAuxiliar[y++]= Double.parseDouble(tokens.nextToken());
+            }
+
             if (matrizPrincipal.getSolucao().compareTo("SLCI") == 0) {
                 mensagemInfinitasSolucoes();
             } else if (matrizPrincipal.getSolucao().compareTo("SLI") == 0) {
@@ -206,11 +215,11 @@ public final class Interface extends JFrame{
                     adicionarResultados(resultado,2);
                 }
                 if (jacobi.isSelected()) {
-                    resultado = solucao.executar("Jacobi");
+                    resultado = solucao.executar("Jacobi",vetorAuxiliar,erro);
                     adicionarResultados(resultado,3);
                 }
                 if (seidel.isSelected()) {
-                    resultado = solucao.executar("Seidel");
+                    resultado = solucao.executar("Seidel",vetorAuxiliar,erro);
                     adicionarResultados(resultado,4);
                 }
                 loading.exit();

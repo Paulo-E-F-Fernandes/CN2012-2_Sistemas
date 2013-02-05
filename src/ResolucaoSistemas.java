@@ -47,13 +47,13 @@ public class ResolucaoSistemas {
      * @param String metodo, int[] vetor
      * @return int[] resultado
      */
-    public double[] executar(String metodo, int[]vetor) {
+    public double[] executar(String metodo, double[]vetor,double erro) {
         double[] temp = {21, 21};
         
         switch (metodos.valueOf(metodo)) {
             case Jacobi:
                 System.out.println(temp.length);
-                temp = jo.executa(matriz, vetor);
+                temp = jo.executa(matriz, vetor,erro);
                 break;
             case Seidel:
                 break;

@@ -19,7 +19,7 @@ public class GaussJacobi extends TesteParada {
     private int j;
     
     
-    public double [] executa(Matriz z, int[] vetor ){
+    public double [] executa(Matriz z, double[] vetor,double erro ){
         
         
         linhas = z.linhas;

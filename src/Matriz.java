@@ -8,7 +8,7 @@ public class Matriz {
     public int colunas;
     public double matrizAmpliada[][];
     public double matriz[][];
-    public double coeficientes[];
+    public double termosIndependentes[];
     private String solucao;//string utilizada para ver se sistema tem unica solucao, infinitas ou é impossível
 
     public Matriz(int linhas,int colunas, double[][] vetor)
@@ -16,7 +16,7 @@ public class Matriz {
         this.linhas = linhas;
         this.colunas = colunas;
         matrizAmpliada = new double [linhas][colunas];
-        coeficientes=new double[linhas];//coeficientes separados 
+        termosIndependentes=new double[linhas];//coeficientes separados
         setMatrizAmpliada(vetor);
     }
     
@@ -25,7 +25,7 @@ public class Matriz {
         this.linhas = linhas;
         this.colunas = colunas;
         matrizAmpliada = new double [linhas][colunas];//matriz e separa dos coeficientes pois necessario efetuar calculos apenas com ela
-        coeficientes=new double[linhas];//coeficientes separados       
+        termosIndependentes=new double[linhas];//coeficientes separados
     }
 
     public Matriz()
@@ -123,10 +123,10 @@ public class Matriz {
      */
     private void setCoeficientes()
     {
-        coeficientes = new double[linhas];
+        termosIndependentes = new double[linhas];
         for(int i = 0;i<linhas;i++)
         {
-            coeficientes[i]= matrizAmpliada[i][colunas-1];
+            termosIndependentes[i]= matrizAmpliada[i][colunas-1];
         }
     }
     
@@ -136,7 +136,7 @@ public class Matriz {
      */
     public double[] getCoeficientes()
     {
-        return coeficientes;
+        return termosIndependentes;
     }
     
     /* metodo que retorna a matriz sem os coeficientes
@@ -187,7 +187,7 @@ public class Matriz {
     				flag = false;
     			}
     			if (flag) {
-    				if (fatorMult == (this.coeficientes[j] / this.coeficientes[i])) {
+    				if (fatorMult == (this.termosIndependentes[j] / this.termosIndependentes[i])) {
     					return "SLCI";	// Sistema Linear Compatível Indeterminado
     				}
     				else {
