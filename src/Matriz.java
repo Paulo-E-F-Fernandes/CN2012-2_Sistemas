@@ -4,8 +4,6 @@
  * @version 3.0
  */
 public class Matriz {
-    
-    
     public int linhas;
     public int colunas;
     public double matrizAmpliada[][];
@@ -93,6 +91,7 @@ public class Matriz {
         this.linhas = linhas;
         this.colunas = colunas;
         matriz = new double [linhas][colunas];
+        matrizAmpliada = new double [linhas][colunas];
     }
 
     public void setMatrizAmpliada(double[][]m)

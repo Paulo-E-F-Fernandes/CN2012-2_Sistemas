@@ -5,9 +5,14 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
@@ -20,6 +25,7 @@ import javax.swing.filechooser.FileFilter;
  */
 public final class Interface extends JFrame{
     private Matriz matrizPrincipal;
+    private double[][] matrizArquivo;
     private ResolucaoSistemas solucao;
     private JTextField[] entradas;//contem os botoes da matriz de entrada
     private JLabel[] resultados;//vetor de labels que contem os resultados
@@ -37,7 +43,7 @@ public final class Interface extends JFrame{
   public Interface()
   {
 
-      //matrizPrincipal = new Matriz();
+      matrizPrincipal = new Matriz();
       setTitle("Sistemas");
       painelConfiguracoes = new JPanel();
       painelConfiguracoes.setLayout(new GridLayout(17,0));// 17 botoes verticalmente
@@ -52,11 +58,21 @@ public final class Interface extends JFrame{
    * @return void
    */
     public void insereBotoesNoLayout() {
+        int j=0,k=0;
         for (int i = 0; i < linhas*colunas; i++) {
             entradas[i] = new JTextField();
-            entradas[i].setText("");//nao pode ter espaco, senao da problema no parseInt
+            if(matrizArquivo==null) { //caso nao tem numeros para completar na matriz
+                entradas[i].setText(""); //nao pode ter espaco, senao da problema no parseInt
+            }
+            else {//senao ele coloca os numeros do
+               entradas[i].setText(Double.toString(matrizArquivo[j][k]));
+               if(k>=colunas-1){k=0;j++;}//pula para proxima coluna
+               else{k++;}//vai andando na linha 
+            } 
+           
             painelMatriz.add(entradas[i]);//adiciona o campo de texto no painel das jogadas
         }
+         matrizArquivo = null;
     }
 
     /* metodo que limpa as caixas de texto da matriz
@@ -96,7 +112,6 @@ public final class Interface extends JFrame{
         textVetorInicial = new JTextField();
         textVetorInicial.setText("0.2 1.7 5 3.6");
         //textVetorInicial.setVisible(false);
-        
 
         textErro = new JTextField();
         textErro.setText("0.005");
@@ -155,16 +170,11 @@ public final class Interface extends JFrame{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
             double[][] m = new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
-            double[] vetor = new double[linhas];
             int k = 0;
-            
-            System.out.println(textVetorInicial.getText());
-            
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
-                    m[i][j] = Integer.parseInt(entradas[k].getText());
+                    m[i][j] = Double.parseDouble(entradas[k].getText());
                     k++;
                 }
             }
@@ -287,7 +297,7 @@ public final class Interface extends JFrame{
             matrizPrincipal = new Matriz(linhas,colunas);
             frameMatriz = new JFrame("matriz");
             //frameMatriz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frameMatriz.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
+            //frameMatriz.setResizable(false);//nao deixa o usuario aumentar o tamanho da tela
             frameMatriz.setLocationRelativeTo(null);
             painelMatriz = new JPanel();
             painelMatriz.setPreferredSize(boardSize);
@@ -308,38 +318,56 @@ public final class Interface extends JFrame{
    * @param void
    * @return void
    */
-    public class botaoAbrirArquivo implements ActionListener {     
+    public class botaoAbrirArquivo implements ActionListener {
+
+        @Override
         public void actionPerformed(ActionEvent e) {
-        	double[][] m;//= new double[linhas][colunas];//matriz temporaria para pegar os valores dos campos de texto
             chooserFile = new JFileChooser();
-            final ExtensionFileFilter filter = new ExtensionFileFilter();  
-            filter.adicionarExtensao(".csv");  
-            filter.adicionarExtensao(".txt");  
-            chooserFile.setFileFilter( filter ); 
+            final ExtensionFileFilter filter = new ExtensionFileFilter();
+            filter.adicionarExtensao(".csv");
+            filter.adicionarExtensao(".txt");
+            chooserFile.setFileFilter(filter);
             int retorno = chooserFile.showOpenDialog(null);
-            if(retorno == JFileChooser.APPROVE_OPTION)//se a pessoa clicar em cancelar nao vai fazer nada pois nao tem um else definido
+            if (retorno == JFileChooser.APPROVE_OPTION)//se a pessoa clicar em cancelar nao vai fazer nada pois nao tem um else definido
             {
-            	System.out.println(chooserFile.getSelectedFile().toString());
-                System.exit(0);
-            	//File arquivo = chooserFile.getSelectedFile();// =====>>>> AGORA E CONTIGO PAULO, TENS QUE LER DO ARQUIVO E LARGAR NA MATRIZ, COMO LAH NO BOTAO INICIAR, DIVIRTA-SE
-                
-                
-                //colunas =
-                //linhas = setar as variaveis globais
-                //spinnerLinhas.setValue(linhas);//======>AKI TENS QUE SETAR O NUMERO DE LINHAS DO SPINNER E ABAIXO SETAR O NUMERO DE COLUNAS
-                //spinnerColunas.setValue(colunas);
-                //matrizPrincipal.setMatrizAmpliada(m);//depois de todos os valores armazenados ma matriz temporaria m, setar a matriz no objeto Matriz
-                painelMatriz = new JPanel();
-                for (int i = 0; i < linhas*colunas; i++) {
-                    entradas[i] = new JTextField();
-                    entradas[i].setText("");//==>>aki tens de colocar o valor de cada posicao da matriz
-                    painelMatriz.add(entradas[i]);//adiciona o campo de texto no painel das jogadas
+                try {
+                    File arquivo = chooserFile.getSelectedFile();
+                    lerArquivo(arquivo);
+                } catch (FileNotFoundException ex) {
+                    System.err.println("Não foi possivel abrir o arquivo");
+                } catch (IOException ex) {
+                    System.err.println("A primeira linha deve conter o nº de colunas e de linhas da matriz, seguido pela própria matriz");
                 }
-                gerar.doClick();//depois de colocado o valor de cada posicao da matriz ele continua como se fosse um clique no botao gerarmatriz
-                
             }
         }
-   }
+    }
+    
+    public void lerArquivo(File arquivo) throws FileNotFoundException, IOException {
+        int y=0,z=0;
+        BufferedReader bufferEntrada;
+        String stringIn;
+        StringTokenizer tokens;
+        bufferEntrada = new BufferedReader(new FileReader(arquivo));
+        stringIn = bufferEntrada.readLine();
+        tokens = new StringTokenizer(stringIn,",");//separa os tokens por virgulas
+        linhas = Integer.parseInt(tokens.nextToken());
+        colunas = Integer.parseInt(tokens.nextToken());
+        spinnerLinhas.setValue(linhas);
+        spinnerColunas.setValue(colunas);
+        matrizArquivo = new double[linhas][colunas];
+        //agora comeca a ler a matriz
+        while ((stringIn = bufferEntrada.readLine()) != null) {
+            tokens = new StringTokenizer(stringIn,",");
+            while(tokens.hasMoreElements())
+            {
+                matrizArquivo[y][z++]=Double.parseDouble(tokens.nextToken());
+            }
+            y++;z=0;//proxima linha
+        }
+        matrizPrincipal.setDimensao(linhas, colunas);
+        matrizPrincipal.setMatrizAmpliada(matrizArquivo);//depois de todos os valores armazenados ma matriz temporaria m, setar a matriz no objeto Matriz
+        gerar.doClick();//depois de colocado o valor de cada posicao da matriz ele continua como se fosse um clique no botao gerarmatriz
+    }
     
      /* metodo que abre uma mensagem indicando que nao ha solucao
      * @param void
