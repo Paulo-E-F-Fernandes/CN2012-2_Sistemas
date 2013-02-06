@@ -199,10 +199,6 @@ public final class Interface extends JFrame{
                 solucao = new ResolucaoSistemas(matrizPrincipal);
                 criarTelaResultados();
                 
-                Loading loading = new Loading();
-                Thread loadingThread = new Thread(loading);
-                loadingThread.start();
-                
                 if (gauss.isSelected()) {
                 	resultado = solucao.executar("Gauss");
                     adicionarResultados(resultado,0);
@@ -223,7 +219,7 @@ public final class Interface extends JFrame{
                     resultado = solucao.executar("Seidel",vetorAuxiliar,erro);
                     adicionarResultados(resultado,4);
                 }
-                loading.exit();
+                
                 frameResultados.getContentPane().add(painelResultados, BorderLayout.CENTER);
                 frameResultados.pack(); //ajusta o tamanho da janela ao dos componentes
                 frameResultados.setVisible(true);//torna visivel a interface

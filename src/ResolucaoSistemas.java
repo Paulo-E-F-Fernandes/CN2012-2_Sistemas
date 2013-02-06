@@ -10,6 +10,7 @@ public class ResolucaoSistemas {
     //private Cholesky cho;
     //private LU lu;
     private GaussJacobi jo;
+    private GaussSeidel gs;
 
     //metodo construtor
     public ResolucaoSistemas(Matriz m)
@@ -19,6 +20,7 @@ public class ResolucaoSistemas {
         //cho= new Cholesky();
         //lu = new LU();
         jo = new GaussJacobi();
+        gs = new GaussSeidel();
 
     }
 
@@ -56,6 +58,7 @@ public class ResolucaoSistemas {
                 temp = jo.executa(matriz, vetor,erro);
                 break;
             case Seidel:
+            	temp = gs.executar(matriz, vetor, erro);
                 break;
         }
         
