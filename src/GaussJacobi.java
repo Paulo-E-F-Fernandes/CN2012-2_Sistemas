@@ -163,7 +163,6 @@ public class GaussJacobi /*extends TesteParada*/ {
     
     /*
     public boolean criterioLinhas(Matriz m) {
-    	double maior = 0;
     	double alfa = 0;
     	
     	for(int i = 0; i < m.linhas; i++) {
@@ -174,17 +173,13 @@ public class GaussJacobi /*extends TesteParada*/ {
     		}
     		alfa = alfa / math.abs(m[i][i]);
     		
-    		if(alfa > maior) {
-    			maior = alfa;
-    		}	
+    		if(alfa > 1) {
+    			return false; // não converge
+    		}
+    		
+    		alfa = 0;
     	}
-    	
-    	if(maior < 1) {
-    		return true; // converge
-    	}
-    	else {
-    		return false; // nao converge
-    	}
+    	return true; // converge
     	
     }
     
