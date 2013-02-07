@@ -1,4 +1,3 @@
-
 public class GaussJacobi extends TesteParada {
 
 	// EDUARDO, já deixei criada está classe para já deixar herdado
@@ -74,4 +73,34 @@ public class GaussJacobi extends TesteParada {
 			
     
     }
+    
+    /*
+    public void criterioLinhas(Matriz m) {
+    	double maior = 0;
+    	double alfa = 0;
+    	
+    	for(int i = 0; i < m.linhas; i++) {
+    		for(int j = 0; j < m.linhas; j++) {
+    			if (i != j) {
+    				alfa = alfa + math.abs(m[i][j]);
+    			}
+    		}
+    		alfa = alfa / math.abs(m[i][i]);
+    		
+    		if(alfa > maior) {
+    			maior = alfa;
+    		}	
+    	}
+    	
+    	if(maior < 1) {
+    		//CONVERGE
+    	}
+    	else {
+    		//TROCA LINHA 0 por 1
+    		//TESTA DE NOVO
+    	}
+    	
+    }
+    
+    */
 }
