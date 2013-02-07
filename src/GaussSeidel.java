@@ -47,4 +47,32 @@ public class GaussSeidel extends GaussJacobi {
 		//this.printaResultados();
 		return atual;
 	}
+/*	
+	public boolean sassenfeld() {
+		//mc
+		double beta = 0;
+		double []betaParcial = new double[mc.linha];
+		
+		for(int i = 0; i < mc.linhas; i++) {
+			betaParcial[i] = 1;
+		}
+		
+		for(int i = 0; i < mc.linhas; i++) {
+			for(int j = 0; j < mc.linhas; j++) {
+				if(i != j) {
+					beta = beta + (Math.abs(mc[i][j]) * betaParcial[j]);
+				}
+			}
+			betaParcial[i] = beta / Math.abs(mc[i[i);
+			if(betaParcial[i] > 1) {
+				return false; // Não converge
+			}
+			beta = 0;
+		}
+		
+		return true; // Converge
+		
+	}
+	
+*/
 }
