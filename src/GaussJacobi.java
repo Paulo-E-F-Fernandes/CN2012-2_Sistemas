@@ -1,11 +1,17 @@
-public class GaussJacobi extends TesteParada {
+public class GaussJacobi /*extends TesteParada*/ {
 
 	// EDUARDO, já deixei criada está classe para já deixar herdado
 	// o método de parada que tu vai usar também.
 	//
 	// Para usar o teste de parada é só usar o método testar da seguinte forma:
 	//
-	
+
+	/*
+	//private Matriz matriz;
+	//private double []resultado;
+	//private int iteracoes = 0;
+	//private double erro;
+	*/
     
     
     private double[] x0;
@@ -20,6 +26,18 @@ public class GaussJacobi extends TesteParada {
     
     public double [] executa(Matriz z, double[] vetor,double erro ){
         
+        
+        /*
+        private Matriz mc = new Matriz() cópia de z //--> declarar
+        
+        if(!this.verficarConvergencia()) {
+		//Sair da operação pois não converge
+        }
+        else {
+        	//calcular
+        }
+        
+        */
         
         linhas = z.linhas;
         colunas = z.colunas;
@@ -75,7 +93,37 @@ public class GaussJacobi extends TesteParada {
     }
     
     /*
-    public void criterioLinhas(Matriz m) {
+    public boolean verificarConvergencia() {
+    	boolean converge = false;
+        for (int i = 0; i < mc.linhas && !converge; i++) {
+        	for (int j = i + 1; j < mc.linhas && !converge; j++) {
+        		converge = criterioLinhas(mc);
+        		if(!converge) {
+        			trocarLinhas(mc,i,j);
+        		}
+        	}
+        }
+    	return converge;    
+    }
+    
+    */
+    
+    /*
+    public void trocarLinhas(Matriz m, int linha1, int linha2) {
+    	double temp;
+    	for(int j = 0; j < m.linhas; j++) {
+    		temp = m[linha1][j];
+    		m[linha1][j] = m[linha2][j];
+    		m[linha2][j] = temp;
+    	}
+    	temp = m.TI[linha1];
+    	m.TI[linha1] = m.TI[linha2];
+    	m.TI[linha2] = temp;
+    }
+    */
+    
+    /*
+    public boolean criterioLinhas(Matriz m) {
     	double maior = 0;
     	double alfa = 0;
     	
@@ -93,14 +141,37 @@ public class GaussJacobi extends TesteParada {
     	}
     	
     	if(maior < 1) {
-    		//CONVERGE
+    		return true; // converge
     	}
     	else {
-    		//TROCA LINHA 0 por 1
-    		//TESTA DE NOVO
+    		return false; // nao converge
     	}
     	
     }
     
     */
+    
+    /*
+    
+
+	public boolean testar(double []atual, double []anterior, double erro) {
+
+		double maior = atual[0] - anterior[0];
+
+		for (int i = 1; i < atual.length; i++) {
+			maior = Math.max(maior, Math.abs(atual[i] - anterior[i]));
+		}
+
+		if (maior < erro) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+
+    */
+    
+    
 }
