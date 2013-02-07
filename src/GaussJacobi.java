@@ -27,17 +27,7 @@ public class GaussJacobi /*extends TesteParada*/ {
     public double [] executa(Matriz z, double[] vetor,double erro ){
         
         
-        /*
-        private Matriz mc = new Matriz() cópia de z //--> declarar
         
-        if(!this.verficarConvergencia()) {
-		//Sair da operação pois não converge
-        }
-        else {
-        	//calcular
-        }
-        
-        */
         
         linhas = z.linhas;
         colunas = z.colunas;
@@ -91,6 +81,54 @@ public class GaussJacobi /*extends TesteParada*/ {
 			
     
     }
+    
+    /*
+    	public double[] executar(Matriz m, double[] vetor, double erro) {
+    	
+    		
+	        private Matriz mc = new Matriz() cópia de z //--> declarar
+	        
+	        if(!this.verficarConvergencia()) {
+			//Sair da operação pois não converge
+	        }
+	        else {
+	        	//calcular
+	        }
+	        
+	*/
+	/*
+    	
+		double []anterior = new double[m.linhas];
+		//double []atual = new double[m.linhas];
+		this.resultado = new double[m.linhas];
+		this.erro = erro;
+		
+		System.arraycopy(vetor, 0, this.resultado, 0, vetor.length);
+		//for(int i = 0; i < m.linhas; i++) {
+		//	atual[i] = vetor[i];
+		//}
+		
+		do {
+			for(int i = 0; i < m.linhas; i++) {
+				System.arraycopy(this.resultado, 0, anterior, 0, resultado.length);
+				//System.arraycopy(atual, 0, anterior, 0, atual.length);
+				this.resultado[i] = m.termosIndependentes[i] / m.matriz[i][i];
+				//atual[i] = m.termosIndependentes[i] / m.matriz[i][i];
+				for(int j = 0; j < m.linhas; j++) {
+					if(i != j) {
+						this.resultado[i] = this.resultado[i] - ((m.matriz[i][j] * anterior[j]) / m.matriz[i][i]);
+						//atual[i] = atual[i] - ((m.matriz[i][j] * atual[j]) / m.matriz[i][i]);
+					}
+				}
+			}
+			this.iteracoes = this.iteracoes + 1;
+		} while(!testeParada(this.resultado, anterior, erro));
+		//} while(!testar(atual, anterior, erro));
+		this.printaResultados();
+		return resultado;
+    */
+    
+    
     
     /*
     public boolean verificarConvergencia() {
@@ -154,7 +192,7 @@ public class GaussJacobi /*extends TesteParada*/ {
     /*
     
 
-	public boolean testar(double []atual, double []anterior, double erro) {
+	public boolean testeParada(double []atual, double []anterior, double erro) {
 
 		double maior = atual[0] - anterior[0];
 
