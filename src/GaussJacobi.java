@@ -109,6 +109,7 @@ public class GaussJacobi /*extends TesteParada*/ {
 		//}
 		
 		do {
+			System.arraycopy(this.resultado, 0, anterior, 0, resultado.length);
 			for(int i = 0; i < m.linhas; i++) {
 				System.arraycopy(this.resultado, 0, anterior, 0, resultado.length);
 				//System.arraycopy(atual, 0, anterior, 0, atual.length);
