@@ -7,7 +7,7 @@ public class ResolucaoSistemas {
     private Matriz matriz;
     private enum metodos{Todos, Gauss,Cholesky,LU,Jacobi,Seidel;}
     private Gauss ga;
-    //private Cholesky cho;
+    private Cholesky cho;
     //private LU lu;
     private GaussJacobi jo;
     private GaussSeidel gs;
@@ -54,8 +54,7 @@ public class ResolucaoSistemas {
         
         switch (metodos.valueOf(metodo)) {
             case Jacobi:
-                System.out.println(temp.length);
-                temp = jo.executa(matriz, vetor,erro);
+                temp = jo.executar(matriz, vetor,erro);
                 break;
             case Seidel:
             	temp = gs.executar(matriz, vetor, erro);

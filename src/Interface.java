@@ -6,12 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -199,26 +204,142 @@ public final class Interface extends JFrame{
                 solucao = new ResolucaoSistemas(matrizPrincipal);
                 criarTelaResultados();
                 
-                if (gauss.isSelected()) {
-                	resultado = solucao.executar("Gauss");
-                    adicionarResultados(resultado,0);
-                }
-                if (lu.isSelected()) {
-                    resultado = solucao.executar("LU");
-                    adicionarResultados(resultado,1);
-                }
-                if (cholesky.isSelected()) {
-                    resultado = solucao.executar("Cholesky");
-                    adicionarResultados(resultado,2);
-                }
-                if (jacobi.isSelected()) {
-                    resultado = solucao.executar("Jacobi",vetorAuxiliar,erro);
-                    adicionarResultados(resultado,3);
-                }
-                if (seidel.isSelected()) {
-                    resultado = solucao.executar("Seidel",vetorAuxiliar,erro);
-                    adicionarResultados(resultado,4);
-                }
+                Locale locale = new Locale("pt","BR");
+                GregorianCalendar calendar = new GregorianCalendar();
+                SimpleDateFormat formatador = new SimpleDateFormat("yyyyMMddHHmmss",locale);
+                
+                FileWriter relatorio;
+				try {
+					relatorio = new FileWriter("Documentos/"+formatador.format(calendar.getTime())+".csv");
+					BufferedWriter relatorioSaida = new BufferedWriter(relatorio);
+					int i;
+					
+	                if (gauss.isSelected()) {
+	                	relatorioSaida.write("Método de Gauss");
+	                	relatorioSaida.newLine();
+	        			for(i = 0; i < matrizPrincipal.linhas - 1; i++) {
+	        				relatorioSaida.write("Caminhão ("+i+")");
+	        				relatorioSaida.write(',');
+	        			}
+	        			relatorioSaida.write("Caminhão ("+i+")");
+	        			relatorioSaida.newLine();
+	        			
+	                	resultado = solucao.executar("Gauss");
+	                	
+	                	for(i = 0; i < resultado.length - 1; i++) {
+	                		relatorioSaida.write(Double.toString(resultado[i]));
+	        				relatorioSaida.write(',');
+	                	}
+	                	relatorioSaida.write(Double.toString(resultado[i]));
+        				relatorioSaida.newLine();
+	                	relatorioSaida.newLine();
+	                	
+	                	adicionarResultados(resultado,0);
+	                }
+	                if (lu.isSelected()) {
+	                	relatorioSaida.write("Método LU");
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.newLine();
+	        			for(i = 0; i < matrizPrincipal.linhas - 1; i++) {
+	        				relatorioSaida.write("Caminhão ("+i+")");
+	        				relatorioSaida.write(',');
+	        			}
+	        			relatorioSaida.write("Caminhão ("+i+")");
+	        			relatorioSaida.newLine();
+	        			
+	                	resultado = solucao.executar("LU");
+
+	                	for(i = 0; i < resultado.length - 1; i++) {
+	                		relatorioSaida.write(Double.toString(resultado[i]));
+	        				relatorioSaida.write(',');
+	                	}
+	                	relatorioSaida.write(Double.toString(resultado[i]));
+        				relatorioSaida.newLine();
+	                	relatorioSaida.newLine();
+	                	
+	                	adicionarResultados(resultado,1);
+	                }
+	                if (cholesky.isSelected()) {
+	                	relatorioSaida.write("Método de Cholesky");
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.newLine();
+	        			for(i = 0; i < matrizPrincipal.linhas - 1; i++) {
+	        				relatorioSaida.write("Caminhão ("+i+")");
+	        				relatorioSaida.write(',');
+	        			}
+	        			relatorioSaida.write("Caminhão ("+i+")");
+	        			relatorioSaida.newLine();
+	        			
+	                	resultado = solucao.executar("Cholesky");
+
+	                	for(i = 0; i < resultado.length - 1; i++) {
+	                		relatorioSaida.write(Double.toString(resultado[i]));
+	        				relatorioSaida.write(',');
+	                	}
+	                	relatorioSaida.write(Double.toString(resultado[i]));
+        				relatorioSaida.newLine();
+	                	relatorioSaida.newLine();
+	                	
+	                	adicionarResultados(resultado,2);
+	                }
+	                if (jacobi.isSelected()) {
+	                	relatorioSaida.write("Método de Gauss-Jacobi");
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.newLine();
+	        			for(i = 0; i < matrizPrincipal.linhas - 1; i++) {
+	        				relatorioSaida.write("Caminhão ("+i+")");
+	        				relatorioSaida.write(',');
+	        			}
+	        			relatorioSaida.write("Caminhão ("+i+")");
+	        			relatorioSaida.newLine();
+	        			
+	                	resultado = solucao.executar("Jacobi",vetorAuxiliar,erro);
+
+	                	for(i = 0; i < resultado.length - 1; i++) {
+	                		relatorioSaida.write(Double.toString(resultado[i]));
+	        				relatorioSaida.write(',');
+	                	}
+	                	relatorioSaida.write(Double.toString(resultado[i]));
+        				relatorioSaida.newLine();
+	                	relatorioSaida.newLine();
+	                	
+	                	adicionarResultados(resultado,3);
+	                }
+	                if (seidel.isSelected()) {
+	                	relatorioSaida.write("Método de Gauss-Seidel");
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.write(',');
+	                	relatorioSaida.newLine();
+	        			for(i = 0; i < matrizPrincipal.linhas - 1; i++) {
+	        				relatorioSaida.write("Caminhão ("+i+")");
+	        				relatorioSaida.write(',');
+	        			}
+	        			relatorioSaida.write("Caminhão ("+i+")");
+	        			relatorioSaida.newLine();
+	        			
+	                	resultado = solucao.executar("Seidel",vetorAuxiliar,erro);
+
+	                	for(i = 0; i < resultado.length - 1; i++) {
+	                		relatorioSaida.write(Double.toString(resultado[i]));
+	        				relatorioSaida.write(',');
+	                	}
+	                	relatorioSaida.write(Double.toString(resultado[i]));
+        				relatorioSaida.newLine();
+	                	relatorioSaida.newLine();
+	                	
+	                	adicionarResultados(resultado,4);
+	                }
+	                relatorioSaida.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
                 
                 frameResultados.getContentPane().add(painelResultados, BorderLayout.CENTER);
                 frameResultados.pack(); //ajusta o tamanho da janela ao dos componentes
