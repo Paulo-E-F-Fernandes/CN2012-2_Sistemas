@@ -20,7 +20,7 @@ public class GaussSeidel extends GaussJacobi {
         else {
         	this.erro = erro;
     		this.calcular(vetor);
-    		this.printaResultados();
+    		this.printaResultados("--Gauss Seidel--");
         }
 		return this.resultado;
 	}
