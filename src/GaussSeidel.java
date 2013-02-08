@@ -1,6 +1,10 @@
 
 public class GaussSeidel extends GaussJacobi {
 	
+	public GaussSeidel () {
+		
+	}
+	
 	/* metodo que executa o metodo de Gauss-Jacobi do calculo numerico
      * 
      * @param Matriz, double[], double
