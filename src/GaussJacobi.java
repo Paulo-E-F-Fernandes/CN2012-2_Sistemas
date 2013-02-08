@@ -32,7 +32,7 @@ public class GaussJacobi {
         else {
         	this.erro = erro;
     		this.calcular(vetor);
-    		this.printaResultados();
+    		this.printaResultados("--Gauss Jacobi--");
         }
 		return this.resultado;
 	}
@@ -93,8 +93,8 @@ public class GaussJacobi {
      * @param void
      * @return void
      */
-    protected void printaResultados() {
-		System.out.println("\n--Gauss Jacobi--");
+    protected void printaResultados(String str) {
+		System.out.println("\n"+str);
 		for(int i = 0; i < this.resultado.length; i++) {
 			System.out.println("x"+i+" = "+this.resultado[i]);
 		}
