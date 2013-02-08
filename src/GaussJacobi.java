@@ -1,177 +1,114 @@
-public class GaussJacobi /*extends TesteParada*/ {
 
-	// EDUARDO, já deixei criada está classe para já deixar herdado
-	// o método de parada que tu vai usar também.
-	//
-	// Para usar o teste de parada é só usar o método testar da seguinte forma:
-	//
+public class GaussJacobi {
 
-	/*
-	//private Matriz matriz;
-	//private double []resultado;
-	//private int iteracoes = 0;
-	//private double erro;
-	*/
-    
-    
-    private double[] x0;
-    private double[] x;
-    private double e;
-    private double  temp = 0;
-    private int linhas;
-    private int colunas;
-    private int i;
-    private int j;
-    
-    
-    public double [] executa(Matriz z, double[] vetor,double erro ){
-        
-        
-        
-        
-        linhas = z.linhas;
-        colunas = z.colunas;
-	x0[1] = 0.7;
-	x0[2] = -1.6;
-	x0[3] = 0.6;
-        
-        System.out.println("cheguei!");
-        
+	private Matriz matriz;
+	private double []resultado;
+	private int iteracoes = 0;
+	private double erro;
 	
-        z.getCoeficientes();
-        
-        
-        
-	
-	//---------------------------//
-	
-	for(i = 1; i<linhas; i++){
-		for(j = 1; j<colunas; j++){
-			if(i!=j){
-				temp += -z.matrizAmpliada[i][j] * x0[j];
-			}
-		}
-		x[i] = (temp + z.matriz[i][colunas])/z.matrizAmpliada[i][i];
-		temp = 0;
-			
+	/* metodo construtor
+     * 
+     */
+	public GaussJacobi () {
+		
 	}
 	
-         System.out.println("Critério de parada com relação a: " + e);
-         
-         
-         
-         if(this.testar(x, x0, e) == false){
-			System.out.println("Satisfaz!");
-                        
-        }
-        else{
-            System.out.println("Não deu! ");
-            for(i =1; i<linhas; i++)
-            x0[i] = x[i];
-        }
-	
-         for(i = 1; i<linhas; i++)
-             x[i] = 22;
-         
-	return x;
-	
-	
-		
-
-			
-    
-    }
-    
-    /*
-    	public double[] executar(Matriz m, double[] vetor, double erro) {
-    	
-    		
-	        private Matriz mc = new Matriz() cópia de z //--> declarar
-	        
-	        if(!this.verficarConvergencia()) {
-			//Sair da operação pois não converge
-	        }
-	        else {
-	        	//calcular
-	        }
-	        
-	*/
-	/*
-    	
-		double []anterior = new double[m.linhas];
-		//double []atual = new double[m.linhas];
+	/* metodo que executa o metodo de Gauss-Jacobi do calculo numerico
+     * 
+     * @param Matriz, double[], double
+     * @return double[]
+     */
+    public double[] executar (Matriz m, double[] vetor, double erro) {
+		this.matriz = new Matriz(m.linhas, m.colunas);
+		this.matriz.setMatrizAmpliada(m.matrizAmpliada);
 		this.resultado = new double[m.linhas];
-		this.erro = erro;
+		
+		if (!this.verificarConvergencia()) {
+			for(int i = 0; i < this.matriz.linhas; i++) {
+				this.resultado[i] = 0;
+				this.erro = 0;
+			}
+        }
+        else {
+        	this.erro = erro;
+    		this.calcular(vetor);
+    		this.printaResultados();
+    		return this.resultado;
+        }
+		return resultado;
+	}
+    
+    /* metodo que calcula o resultado
+     * 
+     * @param double[]
+     * @return void
+     */
+    private void calcular(double[] vetor) {
+    	double[] anterior = new double[this.matriz.linhas];
 		
 		System.arraycopy(vetor, 0, this.resultado, 0, vetor.length);
-		//for(int i = 0; i < m.linhas; i++) {
-		//	atual[i] = vetor[i];
-		//}
 		
 		do {
-			System.arraycopy(this.resultado, 0, anterior, 0, resultado.length);
-			for(int i = 0; i < m.linhas; i++) {
-				System.arraycopy(this.resultado, 0, anterior, 0, resultado.length);
-				//System.arraycopy(atual, 0, anterior, 0, atual.length);
-				this.resultado[i] = m.termosIndependentes[i] / m.matriz[i][i];
-				//atual[i] = m.termosIndependentes[i] / m.matriz[i][i];
-				for(int j = 0; j < m.linhas; j++) {
+			System.arraycopy(this.resultado, 0, anterior, 0, this.resultado.length);
+			for(int i = 0; i < this.matriz.linhas; i++) {
+				this.resultado[i] = this.matriz.termosIndependentes[i] / this.matriz.matriz[i][i];
+				for(int j = 0; j < this.matriz.linhas; j++) {
 					if(i != j) {
-						this.resultado[i] = this.resultado[i] - ((m.matriz[i][j] * anterior[j]) / m.matriz[i][i]);
-						//atual[i] = atual[i] - ((m.matriz[i][j] * atual[j]) / m.matriz[i][i]);
+						this.resultado[i] = this.resultado[i] - ((this.matriz.matriz[i][j] * anterior[j]) / this.matriz.matriz[i][i]);
 					}
 				}
 			}
 			this.iteracoes = this.iteracoes + 1;
-		} while(!testeParada(this.resultado, anterior, erro));
-		//} while(!testar(atual, anterior, erro));
-		this.printaResultados();
-		return resultado;
-    */
+		} while(!testeParada(this.resultado, anterior));
+    }
     
-    
-    
-    /*
-    public boolean verificarConvergencia() {
+    /* metodo que printa o resultado
+     * 
+     * @param void
+     * @return void
+     */
+    private void printaResultados() {
+		System.out.println("--Gauss Jacobi--");
+		for(int i = 0; i < this.resultado.length; i++) {
+			System.out.println("x"+i+" = "+this.resultado[i]);
+		}
+		System.out.println("Número de iterações = "+this.iteracoes);
+		System.out.println("Erro = "+this.erro);
+	}
+	
+	/* metodo que verifica a convergencia
+     * 
+     * @param void
+     * @return boolean
+     */
+    private boolean verificarConvergencia() {
     	boolean converge = false;
-        for (int i = 0; i < mc.linhas && !converge; i++) {
-        	for (int j = i + 1; j < mc.linhas && !converge; j++) {
-        		converge = criterioLinhas(mc);
+        for (int i = 0; i < this.matriz.linhas && !converge; i++) {
+        	for (int j = i + 1; j < this.matriz.linhas && !converge; j++) {
+        		converge = criterioLinhas();
         		if(!converge) {
-        			trocarLinhas(mc,i,j);
+        			trocarLinhas(i,j);
         		}
         	}
         }
     	return converge;    
     }
-    
-    */
-    
-    /*
-    public void trocarLinhas(Matriz m, int linha1, int linha2) {
-    	double temp;
-    	for(int j = 0; j < m.linhas; j++) {
-    		temp = m[linha1][j];
-    		m[linha1][j] = m[linha2][j];
-    		m[linha2][j] = temp;
-    	}
-    	temp = m.TI[linha1];
-    	m.TI[linha1] = m.TI[linha2];
-    	m.TI[linha2] = temp;
-    }
-    */
-    
-    /*
-    public boolean criterioLinhas(Matriz m) {
+	
+	/* metodo que calcula o criterio das linhas
+     * 
+     * @param void
+     * @return boolean
+     */
+    private boolean criterioLinhas() {
     	double alfa = 0;
     	
-    	for(int i = 0; i < m.linhas; i++) {
-    		for(int j = 0; j < m.linhas; j++) {
+    	for(int i = 0; i < this.matriz.linhas; i++) {
+    		for(int j = 0; j < this.matriz.linhas; j++) {
     			if (i != j) {
-    				alfa = alfa + math.abs(m[i][j]);
+    				alfa = alfa + Math.abs(this.matriz.matriz[i][j]);
     			}
     		}
-    		alfa = alfa / math.abs(m[i][i]);
+    		alfa = alfa / Math.abs(this.matriz.matriz[i][i]);
     		
     		if(alfa > 1) {
     			return false; // não converge
@@ -182,13 +119,13 @@ public class GaussJacobi /*extends TesteParada*/ {
     	return true; // converge
     	
     }
-    
-    */
-    
-    /*
-    
-
-	public boolean testeParada(double []atual, double []anterior, double erro) {
+	
+    /* metodo que calcula o criterio de parada
+     * 
+     * @param double[], double[]
+     * @return boolean
+     */
+    private boolean testeParada(double []atual, double []anterior) {
 
 		double maior = atual[0] - anterior[0];
 
@@ -196,16 +133,29 @@ public class GaussJacobi /*extends TesteParada*/ {
 			maior = Math.max(maior, Math.abs(atual[i] - anterior[i]));
 		}
 
-		if (maior < erro) {
+		if (maior < this.erro) {
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
-
-
-    */
-    
-    
+	
+    /* metodo que troca as linhas da matriz
+     * 
+     * @param int, int
+     * @return void
+     */
+    private void trocarLinhas (int linha1, int linha2) {
+    	double temp;
+    	for (int j = 0; j < this.matriz.linhas; j++) {
+    		temp = this.matriz.matriz[linha1][j];
+    		this.matriz.matriz[linha1][j] = this.matriz.matriz[linha2][j];
+    		this.matriz.matriz[linha2][j] = temp;
+    	}
+    	temp = this.matriz.termosIndependentes[linha1];
+    	this.matriz.termosIndependentes[linha1] = this.matriz.termosIndependentes[linha2];
+    	this.matriz.termosIndependentes[linha2] = temp;
+    }
+	
 }
