@@ -1,10 +1,10 @@
 
 public class GaussJacobi {
 
-	private Matriz matriz;
-	private double []resultado;
-	private int iteracoes = 0;
-	private double erro;
+	protected Matriz matriz;
+	protected double []resultado;
+	protected int iteracoes = 0;
+	protected double erro;
 	
 	/* metodo construtor
      * 
@@ -33,9 +33,8 @@ public class GaussJacobi {
         	this.erro = erro;
     		this.calcular(vetor);
     		this.printaResultados();
-    		return this.resultado;
         }
-		return resultado;
+		return this.resultado;
 	}
     
     /* metodo que calcula o resultado
@@ -43,7 +42,7 @@ public class GaussJacobi {
      * @param double[]
      * @return void
      */
-    private void calcular(double[] vetor) {
+    protected void calcular(double[] vetor) {
     	double[] anterior = new double[this.matriz.linhas];
 		
 		System.arraycopy(vetor, 0, this.resultado, 0, vetor.length);
@@ -62,13 +61,40 @@ public class GaussJacobi {
 		} while(!testeParada(this.resultado, anterior));
     }
     
+    /* metodo que retorna o resultado
+     * 
+     * @param void
+     * @return double[]
+     */
+    public double[] getResultado() {
+		return this.resultado;
+	}
+    
+    /* metodo que retorna as iteracoes
+     * 
+     * @param void
+     * @return int
+     */
+    public int getIteracoes() {
+		return this.iteracoes;
+    }
+    
+    /* metodo que retorna o erro
+     * 
+     * @param void
+     * @return double
+     */
+    public double getErro() {
+		return this.erro;
+    }
+    
     /* metodo que printa o resultado
      * 
      * @param void
      * @return void
      */
-    private void printaResultados() {
-		System.out.println("--Gauss Jacobi--");
+    protected void printaResultados() {
+		System.out.println("\n--Gauss Jacobi--");
 		for(int i = 0; i < this.resultado.length; i++) {
 			System.out.println("x"+i+" = "+this.resultado[i]);
 		}
@@ -81,7 +107,7 @@ public class GaussJacobi {
      * @param void
      * @return boolean
      */
-    private boolean verificarConvergencia() {
+    protected boolean verificarConvergencia() {
     	boolean converge = false;
         for (int i = 0; i < this.matriz.linhas && !converge; i++) {
         	for (int j = i + 1; j < this.matriz.linhas && !converge; j++) {
@@ -99,7 +125,7 @@ public class GaussJacobi {
      * @param void
      * @return boolean
      */
-    private boolean criterioLinhas() {
+    protected boolean criterioLinhas() {
     	double alfa = 0;
     	
     	for(int i = 0; i < this.matriz.linhas; i++) {
@@ -125,7 +151,7 @@ public class GaussJacobi {
      * @param double[], double[]
      * @return boolean
      */
-    private boolean testeParada(double []atual, double []anterior) {
+    protected boolean testeParada(double []atual, double []anterior) {
 
 		double maior = atual[0] - anterior[0];
 
@@ -146,7 +172,7 @@ public class GaussJacobi {
      * @param int, int
      * @return void
      */
-    private void trocarLinhas (int linha1, int linha2) {
+    protected void trocarLinhas (int linha1, int linha2) {
     	double temp;
     	for (int j = 0; j < this.matriz.linhas; j++) {
     		temp = this.matriz.matriz[linha1][j];
