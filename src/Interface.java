@@ -207,16 +207,16 @@ public final class Interface extends JFrame{
 	                relatorioFinal.escreveRelatorio(resultado, "Eliminação de Gauss");	
 	            	adicionarResultados(resultado,0);
 	            }
+	            if (cholesky.isSelected()) {
+                	resultado = solucao.executar("Cholesky");
+                	relatorioFinal.escreveRelatorio(resultado, "Fatorção de Cholesky");
+                	adicionarResultados(resultado,1);
+                }
 	            if (lu.isSelected()) {
 	            	resultado = solucao.executar("LU");
 	            	relatorioFinal.escreveRelatorio(resultado, "Fatoração LU");
-	            	adicionarResultados(resultado,1);
+	            	adicionarResultados(resultado,2);
 	            }
-                if (cholesky.isSelected()) {
-                	resultado = solucao.executar("Cholesky");
-                	//relatorioFinal.escreveRelatorio(resultado, "Fatorção de Cholesky");
-                	//adicionarResultados(resultado,2);
-                }
                 if (jacobi.isSelected()) {
                 	resultado = solucao.executar("Jacobi",vetorAuxiliar,erro);
                 	relatorioFinal.escreveRelatorio(resultado, "Método de Gauss-Jacobi");

@@ -175,7 +175,6 @@ public class GaussJacobi {
      */
     protected void trocarLinhas (int linha1, int linha2) {
     	double temp;
-    	System.out.println("Troca - Linha1="+linha1+"Linha2="+linha2);
     	for (int j = 0; j < this.matriz.linhas; j++) {
     		temp = this.matriz.matriz[linha1][j];
     		this.matriz.matriz[linha1][j] = this.matriz.matriz[linha2][j];
