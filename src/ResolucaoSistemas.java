@@ -17,7 +17,7 @@ public class ResolucaoSistemas {
     {
         this.matriz =m;
         ga = new Gauss();
-        //cho= new Cholesky();
+        cho= new Cholesky();
         //lu = new LU();
         jo = new GaussJacobi();
         gs = new GaussSeidel();
@@ -37,6 +37,7 @@ public class ResolucaoSistemas {
                 temp = ga.executar(matriz);
                 break;
             case Cholesky:
+            	temp = cho.executar(matriz);
                 break;
 
             case LU:
@@ -54,7 +55,7 @@ public class ResolucaoSistemas {
         
         switch (metodos.valueOf(metodo)) {
             case Jacobi:
-                temp = jo.executar(matriz, vetor,erro);
+                temp = jo.executar(matriz, vetor, erro);
                 break;
             case Seidel:
             	temp = gs.executar(matriz, vetor, erro);
