@@ -1,57 +1,68 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
+ *@see http://introcs.cs.princeton.edu/java/95linear/Cholesky.java.html
+ * 
+ * 
  * @author angelin
  */
 public class Cholesky {
+    private Matriz matrizTemp;
     private double[] resultado;
-    private String tipo = "OK";
+    private double[][] A;
+    int linhas,colunas;
+    private double[] b;//termos independentes
+    private double[][] L;
+    private double[][] LT;
+    private double[] y;//L*y=b
+    private double[] x;//LT*x=y
+    
+    public double[] executar(Matriz m) {
+        matrizTemp = m;
+        alocarVetores();
+        if(!ehSimetrica(A))
+            System.err.println("Matriz não é simétrica para o método de Cholesky");
+        else if (!ehPositivaDefinida(A))
+            System.err.println("Matriz não é positiva definada para o método de Cholesky");
+        else
+            L = cholesky(A);
+            LT = transposta(L);
+            y = calcularResultadoInferior(L,b);//L*y=b
+            resultado = calcularResultadoSuperior(LT,y);//LT*x=y
+        return resultado;//se entrar em algum if entao vai devolver o vetor zerado
+    }
     
     //teste de simetria
     public boolean ehSimetrica(double[][] matriz){
-    	if(matriz.length != matriz[0].length){
-        	this.tipo = "Não é simétrica";
-        	return false;
+        for(int i = 0,j = matriz.length -1 ; i < matriz.length ; i++,j--){
+            if(matriz[i][j] != matriz[j][i]){
+                return false;
+            }
         }
-    	for (int i = 0; i < matriz.length; i++) {
-    		for (int j = 0; j < matriz.length; j++) {
-    			if ((i != j) && (matriz[i][j] != matriz[j][i])) {
-    				this.tipo = "Não é simétrica";
-    		        return false;
-    			}
-    		}
-    	}
         return true;
     }
     
-    //definir se matriz  eé positiva definida
+    //definir se matrizTemp  eé positiva definida
     public boolean ehPositivaDefinida(double[][] a){
-    	double[][] u = a;
-		double[][] m = new double[a.length][a[0].length];
-		for(int i = 0 ; i < a.length -1 ; i++){
-			setIdentidadeToMatriz(m);
-			for(int j = i + 1 ; j < a.length ; j++){
-				m[j][i] = -u[j][i] / u[i][i];
-			}
-			u = multiplicarMatrizes(m, u);          
+	double[][] u = a;
+	double[][] m = new double[a.length][a[0].length];
+	for(int i = 0 ; i < a.length -1 ; i++){
+		setIdentidadeToMatriz(m);
+		for(int j = i + 1 ; j < a.length ; j++){
+			m[j][i] = -u[j][i] / u[i][i];
 		}
-		//printMatriz(u);
-	                
-		for(int i = 0 ; i < u.length ; i++){
-			if(u[i][i] < 0){
-				this.tipo = "Não é positiva definida";
-				return false;
-			}                
-		}
-		return true;    
+		u = multiplicarMatrizes(m, u);          
 	}
+	//printMatriz(u);
+                
+	for(int i = 0 ; i < u.length ; i++){
+		if(u[i][i] < 0){
+			return false;
+		}                
+	}
+	return true;    
+}
     
-    //seta identidade para matriz
-    public static double[][] setIdentidadeToMatriz(double[][] matriz){
+    //seta identidade para matrizTemp
+    public double[][] setIdentidadeToMatriz(double[][] matriz){
         for(int index = 0 ; index < matriz.length ; index++){
             for(int j = 0; j < matriz[0].length ; j++ ){
                 if(j == index){
@@ -62,117 +73,111 @@ public class Cholesky {
                 }
             }
         }
-	    return matriz;
-	}
+    return matriz;
+}
     
     //multiplicar raizes
-    public static double[][] multiplicarMatrizes(double[][] multiplicadora,double[][] multiplicando){
-		if(multiplicadora[0].length != multiplicando.length){
-			System.out.println("O tamanho das matrizes não são compatíveis");
-			return null;
-		}                                 
-		
-		double[][] resultado = new double[multiplicadora.length][multiplicando[0].length];
-		for(int i = 0 ; i < resultado.length ; i++){
-			for(int j = 0 ; j < resultado[0].length ; j++){
-				resultado[i][j] = 0;
-			}
-		}               
-		for(int i = 0 ; i < multiplicadora.length ; i++){
-			for(int j = 0 ; j < multiplicando[0].length ; j++){
-				for(int k = 0 ; k < multiplicando.length ; k++){
-					resultado[i][j] += multiplicadora[i][k] * multiplicando[k][j];
-				}
+    public double[][] multiplicarMatrizes(double[][] multiplicadora,double[][] multiplicando){
+	if(multiplicadora[0].length != multiplicando.length){
+		System.err.println("O tamanho das matrizes não são compatíveis");
+		return null;
+	}                                 
+	
+	double[][] resultadoTemp = new double[multiplicadora.length][multiplicando[0].length];
+	for(int i = 0 ; i < resultadoTemp.length ; i++){
+		for(int j = 0 ; j < resultadoTemp[0].length ; j++){
+			resultadoTemp[i][j] = 0;
+		}
+	}               
+	for(int i = 0 ; i < multiplicadora.length ; i++){
+		for(int j = 0 ; j < multiplicando[0].length ; j++){
+			for(int k = 0 ; k < multiplicando.length ; k++){
+				resultadoTemp[i][j] += multiplicadora[i][k] * multiplicando[k][j];
 			}
 		}
-		return resultado;        
 	}
+	return resultadoTemp;        
+}
+
     
-    // método executar
-    public double[] executar(Matriz matriz) {
-    	this.resultado = new double[matriz.linhas];
-    	
-    	for (int i = 0; i < matriz.linhas; i++) {
-    		this.resultado[i] = 0;
-    	}
-    	
-    	double[][]G = this.cholesky(matriz.matriz);
-    	if (G != null) {
-    		double temp;
-    		int i, j;
-	    	
-    		for (i = 0; i < G.length; i++) {
-    			temp = 0;
-        		for (j = 0; j < G.length; j++) {
-        			if (i != j) {
-        				temp = temp + (G[i][j] * this.resultado[j]);
-        			}
-        		}
-        		this.resultado[i] = (matriz.termosIndependentes[i] - temp) / G[i][i];
-    		}
-    		
-    		for (j = G.length - 1; j >= 0; j--) {
-    			temp = 0;
-        		for (i = G.length - 1; i >= 0; i--) {
-        			if (j != i) {
-        				temp = temp + (G[i][j] * this.resultado[i]);
-        			}
-        		}
-        		this.resultado[j] = (this.resultado[j] - temp) / G[j][j];
-    		}
-    	}
-    	this.printaResposta();
-    	return this.resultado;
-    }
 
     //METODO CHOLESKY
     
-    public double[][] cholesky(double[][] a){
-		//testes de propriedades para aplicação do cholesky
-		if(!ehSimetrica(a)){
-			return null;
-		}
-		if(!ehPositivaDefinida(a)){
-			return null;
-		}
-	
-		double[][] r = a;
-		for(int k=0 ; k < a.length ; k++){
-			double primeiroSomatorio = 0;
-			for(int p = 0 ; p < k ; p++){
-				primeiroSomatorio += Math.pow(r[k][p], 2);
-			}
-			r[k][k] = Math.sqrt( r[k][k] - primeiroSomatorio );
-			//printMatriz(r);
-			//System.out.println();
-			for(int i = k + 1 ; i < a.length ; i++){
-				double segundoSomatorio = 0;
-				for(int p = 0 ; p < k ; p++){
-					segundoSomatorio += r[i][p] * r[k][p];
-				}
-				r[i][k] = (r[i][k] - segundoSomatorio) / r[k][k];
-				r[k][i] = r[i][k];
-			}                       
-		}
-		for (int i = 0; i < r.length; i++) {
-    		for (int j = i + 1; j < r.length; j++) {
-    			r[i][j] = 0;
-    		}
-    	}
-		return r;
-	}
-    /* metodo que imprime o vetor resposta
+    public double[][] cholesky(double[][] matriz) {
+        double temp[][] = new double[linhas][colunas];
+        for (int i = 0; i < linhas; i++)  {
+            for (int j = 0; j <= i; j++) {
+                double soma = 0.0;
+                for (int k = 0; k < j; k++) {
+                    soma += temp[i][k] * temp[j][k];
+                }
+                if (i == j) temp[i][i] = Math.sqrt(matriz[i][i] - soma);
+                else        temp[i][j] = 1.0 / temp[j][j] * (matriz[i][j] - soma);
+            }
+            if (temp[i][i] <= 0) {
+                System.err.println("Diagonal Principal não é positiva");
+            }
+        }
+        return temp;
+    }
+    
+     /* metodo que transpoe a matrizAmpliada
      * @param void
      * @return void
      */
-    public void printaResposta()
+    public double [][] transposta(double[][]matriz)
     {
-    	System.out.println("\n--Fatorção de Cholesky--");
-    	for(int i = 0; i < this.resultado.length; i++) {
-			System.out.println("x"+i+" = "+this.resultado[i]);
-		}
-    	if (this.tipo.compareTo("OK") != 0) {
-    		System.out.println(tipo);
-    	}
+        double[][] temp = new double[linhas][colunas];
+        for (int i=0; i < linhas; ++i){
+            for (int j=0; j < colunas; ++j){
+                temp[j][i] = matriz [i][j];
+            }
+        }
+        return temp;
+}
+    
+     private double[] calcularResultadoSuperior(double[][]matriz,double[]vetor) {
+        double[] resultado = new double[linhas];
+        linhas--;    // para facilitar os cáculos já que o indece de matrizes em java começam em zero!
+        resultado[linhas] = vetor[linhas] / matriz[linhas][linhas];//calcula o ultimo x, ja que o resultado e praticamente direto
+        for (int k = linhas; k > -1; k--) {
+            double s = 0;
+            for (int j = (k + 1); j < (linhas + 1); j++) {
+                s = s + matriz[k][j] * resultado[j];
+                resultado[k] = (vetor[k] - s) / matriz[k][k];
+            }
+        }
+        linhas++;    // para acertar o valor das linhas
+        return resultado;
+    }
+    
+    private double[] calcularResultadoInferior(double[][]matriz,double[]vetor) 
+    {
+        double[] resultado = new double[linhas];
+        int i =0;
+        resultado[i] = vetor[i] / matriz[i][i];//calcula o primeiro x, ja que o resultado e praticamente direto
+        for (int k = 1; k <linhas; k++) {//começa em 1 pois o primeiro elemento e direto
+            double s = 0;
+            for (int j = 0; j < k; j++) {
+                s = s + matriz[k][j] * resultado[j];
+                resultado[k] = (vetor[k] - s) / matriz[k][k];
+            }
+        }
+        return resultado;
+    }
+    
+        private void alocarVetores() {
+        linhas = matrizTemp.linhas;
+        colunas = matrizTemp.colunas-1;//menos 1 pois o nº de colunas é da matrizTemp ampliada
+        resultado = new double[linhas];
+        b = new double[linhas];
+        y = new double[linhas];
+        x= new double[linhas];
+        A = new double[linhas][colunas];//a A vai estar cheia de zeros
+        System.arraycopy(matrizTemp.termosIndependentes, 0, b, 0, linhas);
+        for(int i=0;i<linhas;i++)
+        {
+            System.arraycopy(matrizTemp.matriz[i], 0, A[i], 0, matrizTemp.colunas-1);
+        }
     }
 }

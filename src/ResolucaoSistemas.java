@@ -1,3 +1,4 @@
+
 /**
  * @author paulo
  * @version 1.0
@@ -8,7 +9,7 @@ public class ResolucaoSistemas {
     private enum metodos{Todos, Gauss,Cholesky,LU,Jacobi,Seidel;}
     private Gauss ga;
     private Cholesky cho;
-    //private LU lu;
+    private LU lu;
     private GaussJacobi jo;
     private GaussSeidel gs;
 
@@ -18,10 +19,9 @@ public class ResolucaoSistemas {
         this.matriz =m;
         ga = new Gauss();
         cho= new Cholesky();
-        //lu = new LU();
+        lu = new LU();
         jo = new GaussJacobi();
         gs = new GaussSeidel();
-
     }
 
 /* metodo que vai executar os metodos diretos
@@ -41,6 +41,7 @@ public class ResolucaoSistemas {
                 break;
 
             case LU:
+            	temp = lu.executar(matriz);
                 break;
         }
         
