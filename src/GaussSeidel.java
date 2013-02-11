@@ -18,8 +18,11 @@ public class GaussSeidel extends GaussJacobi {
 		if (!this.verificarConvergencia()) {
 			for(int i = 0; i < this.matriz.linhas; i++) {
 				this.resultado[i] = 0;
-				this.erro = 0;
+				
 			}
+			this.erro = 0;
+			System.out.println("--Gauss Seidel--");
+			System.out.println("Não converge");
         }
         else {
         	this.erro = erro;

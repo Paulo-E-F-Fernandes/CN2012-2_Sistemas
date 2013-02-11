@@ -1,3 +1,6 @@
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 
 /**
  * @author paulo
@@ -12,6 +15,7 @@ public class ResolucaoSistemas {
     private LU lu;
     private GaussJacobi jo;
     private GaussSeidel gs;
+    private NumberFormat formatacaoSaida;
 
     //metodo construtor
     public ResolucaoSistemas(Matriz m)
@@ -22,6 +26,7 @@ public class ResolucaoSistemas {
         lu = new LU();
         jo = new GaussJacobi();
         gs = new GaussSeidel();
+        formatacaoSaida = new DecimalFormat("0.00000000");
     }
 
 /* metodo que vai executar os metodos diretos
@@ -44,7 +49,8 @@ public class ResolucaoSistemas {
             	temp = lu.executar(matriz);
                 break;
         }
-        
+        System.out.println("Resultado método "+metodo+" =");
+        printarResultado(temp);
         return temp;
     }
     /* metodo que vai executar os metodos iterativos que precisam tbem de um vetor
@@ -62,7 +68,20 @@ public class ResolucaoSistemas {
             	temp = gs.executar(matriz, vetor, erro);
                 break;
         }
-        
+        System.out.println("Método: "+metodo+" =");
+        printarResultado(temp);
         return temp;
+    }
+    
+    /* metodo que printa no terminal o vetor resultante
+     * @param double[] vetor
+     * @return void
+     */
+    public void printarResultado(double[] vet)
+    {
+        for(int i=0;i<vet.length;i++)
+        {
+            System.out.println(formatacaoSaida.format(vet[i]));
+        }
     }
 }
