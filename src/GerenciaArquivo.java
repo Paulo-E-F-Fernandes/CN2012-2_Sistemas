@@ -21,7 +21,7 @@ public class GerenciaArquivo {
 	public GerenciaArquivo(int tamanho) {
 		this.tamanho = tamanho;
 		try {
-			this.relatorioSaida = new BufferedWriter(new FileWriter("Documentos/"+this.geraNome()));
+			this.relatorioSaida = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/CNRelatorio/"+this.geraNome()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

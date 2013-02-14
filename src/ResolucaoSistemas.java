@@ -68,8 +68,6 @@ public class ResolucaoSistemas {
             	temp = gs.executar(matriz, vetor, erro);
                 break;
         }
-        System.out.println("Método: "+metodo+" =");
-        printarResultado(temp);
         return temp;
     }
     

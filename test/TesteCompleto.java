@@ -12,18 +12,20 @@ public class TesteCompleto extends TestCase {
     Matriz m2 = new Matriz(2,3,new double[][] {{2.0,1.0,3.0},{1.0,-3.0,-2.0}});//matriz com solucao unica
     Matriz m3 = new Matriz(4,5,new double[][] {{2.0,2.0,1.0,1.0,7.0},{1.0,-1.0,2.0,-1.0,1.0},{3.0,2.0,-3.0,-2.0,4.0},{4.0,3.0,2.0,1.0,12.0}});//matriz exercicio 1
     Matriz m4 = new Matriz(3,4,new double[][] {{2.0,4.0,-1.0,2.0},{3.0,6.0,1.0,3.0},{1.0,1.0,2.0,4.0}});//matriz exercicio 6
-    Matriz m5 = new Matriz(2,3,new double[][] {{2.0,1.0,3.0},{4.0,-2.0,6.0}});//matriz com infinitas solucoes
+    Matriz m5 = new Matriz(2,3,new double[][] {{2.0,1.0,3.0},{4.0,2.0,6.0}});//matriz com infinitas solucoes
     Matriz m6 = new Matriz(2,3,new double[][] {{2.0,1.0,3.0},{4.0,2.0,2.0}});//matriz que nao tem solucao
+    Matriz m7 = new Matriz(5,6,new double[][] {{1.0,0.0,2.0,3.0,2.0,27.0},{1.0,1.0,1.0,2.0,1.0,23.0},{1,2,1,1,2,31},{0.0,1.0,2.0,2.0,3.0,31.0},{2.0,1.0,0.0,1.0,1.0,22.0}});//matriz exercicio 1)
     double[] resposta1 = {-3.0,5.0,0.0};
     double[] resposta2 = {1.0,1.0};
     double[] resposta3 = {1.0,2.0,1.0,0.0};
     double[] resposta4 = {7.0,-3.0,0.0};
+    double[] resposta7 = {4,6,2,3,5};
    
  /**
 * Todo método que começar com a palavra "test" será executado pelo JUnit.
 */
-    public void testGauss1() {
-        assertArrayEquals(resposta1,gauss.executar(m1));
+    public void testGauss7() {
+        assertArrayEquals(resposta7,gauss.executar(m7));
     }
     
     public void testGauss2() {
@@ -41,30 +43,30 @@ public class TesteCompleto extends TestCase {
     
     public void testVerificador1()
     {
-        assertEquals("SLCD",m1.verificador());
+        assertEquals("Determinado",m1.verificador());
     }
     public void testVerificador2()
     {
-        assertEquals("SLCD",m2.verificador());
+        assertEquals("Determinado",m2.verificador());
     }
     public void testVerificador3()
     {
-        assertEquals("SLCD",m3.verificador());
+        assertEquals("Determinado",m3.verificador());
     }
     
     public void testVerificador4()
     {
-        assertEquals("SLCD",m4.verificador());
+        assertEquals("Determinado",m4.verificador());
     }
     
     public void testVerificador5()
     {
-        assertEquals("SLCI",m5.verificador());
+        assertEquals("Indeterminado",m5.verificador());
     }
     
     public void testVerificador6()
     {
-        assertEquals("SLI",m6.verificador());
+        assertEquals("Incompativel",m6.verificador());
     }
     
     /* assert que compara vetores de float ou double somente estara 

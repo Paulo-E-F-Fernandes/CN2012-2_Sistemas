@@ -170,15 +170,15 @@ public class Matriz {
     			}
     			if (flag) {
     				if (fatorMult == (this.termosIndependentes[j] / this.termosIndependentes[i])) {
-    					return "SLCI";	// Sistema Linear Compatível Indeterminado
+    					return "Indeterminado";
     				}
     				else {
-    					return "SLI";	// Sistema Linear Incompatível
+    					return "Incompativel";
     				}
     			}
     		}
     	}
-    	return "SLCD";	// Sistema Linear Compatível Determinado
+    	return "Determinado";
     }
 
 }

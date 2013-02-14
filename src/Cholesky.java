@@ -18,10 +18,16 @@ public class Cholesky {
     public double[] executar(Matriz m) {
         matrizTemp = m;
         alocarVetores();
-        if(!ehSimetrica(A))
-            System.err.println("Matriz não é simétrica para o método de Cholesky");
-        else if (!ehPositivaDefinida(A))
-            System.err.println("Matriz não é positiva definada para o método de Cholesky");
+        if(!ehSimetrica(A)) {
+        	System.out.println("\n--Fatorção de Cholesky--");
+            System.out.println("Matriz não é simétrica para o método de Cholesky");
+            return this.resultado;
+        }
+        else if (!ehPositivaDefinida(A)){
+        	System.out.println("\n--Fatorção de Cholesky--");
+            System.out.println("Matriz não é positiva definada para o método de Cholesky");
+            return this.resultado;
+        }
         else
             L = cholesky(A);
             LT = transposta(L);
@@ -170,6 +176,11 @@ public class Cholesky {
         linhas = matrizTemp.linhas;
         colunas = matrizTemp.colunas-1;//menos 1 pois o nº de colunas é da matrizTemp ampliada
         resultado = new double[linhas];
+        
+        for (int i = 0; i < this.linhas; i++) {
+        	this.resultado[i] = 0; 
+        }
+        
         b = new double[linhas];
         y = new double[linhas];
         x= new double[linhas];

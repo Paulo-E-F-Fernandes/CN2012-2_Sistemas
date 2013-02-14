@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class GaussJacobi {
 
@@ -96,9 +98,11 @@ public class GaussJacobi {
      * @return void
      */
     protected void printaResultados(String str) {
+    	NumberFormat formatacaoSaida = new DecimalFormat("0.00000000");
+    	
 		System.out.println("\n"+str);
 		for(int i = 0; i < this.resultado.length; i++) {
-			System.out.println("x"+i+" = "+this.resultado[i]);
+			System.out.println("x"+i+" = "+formatacaoSaida.format(this.resultado[i]));
 		}
 		System.out.println("Número de iterações = "+this.iteracoes);
 		System.out.println("Erro = "+this.erro);

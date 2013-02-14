@@ -18,10 +18,11 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * @see http://docs.oracle.com/javase/tutorial/uiswing/components/frame.html
+ * @see http://www.java2s.com/Code/Java/Swing-JFC/LabelTextPosition.htm
  * @see http://docs.oracle.com/javase/1.4.2/docs/api/java/text/DecimalFormat.html
  * @see http://www.univasf.edu.br/~max.santana/arquivos/poo_2008.2/laboratorio06_formatandosaida.pdf
  * @author pargles
- * @version 5.0
+ * @version 7.0
  */
 @SuppressWarnings("serial")
 public final class Interface extends JFrame{
@@ -30,8 +31,8 @@ public final class Interface extends JFrame{
     private double[][] matrizArquivo;
     private ResolucaoSistemas solucao;
     private JTextField[] entradas;//contem os botoes da matriz de entrada
-    private JLabel[] resultados;//vetor de labels que contem os resultados
-    private JButton iniciar,gerar,abrirArquivo;
+    private JLabel[] labelResultados;//vetor de labels que contem os labelResultados
+    private JButton botaoIniciar,botaoGerar,botaoAbrirArquivo;
     private JPanel painelMatriz,painelConfiguracoes,painelResultados;
     private JFrame frameMatriz,frameResultados;
     private JTextField textVetorInicial,textErro;
@@ -92,18 +93,18 @@ public final class Interface extends JFrame{
      * @return void
      */
     public void insereConfiguracoes() {
-        iniciar = new JButton("Iniciar");
-        iniciar.setFocusable(false);
-        iniciar.addActionListener(new botaoIniciar());
-        iniciar.setVisible(false);
+        botaoIniciar = new JButton("Iniciar");
+        botaoIniciar.setFocusable(false);
+        botaoIniciar.addActionListener(new botaoIniciar());
+        botaoIniciar.setEnabled(false);
 
-        gerar = new JButton("Gerar Matriz");
-        gerar.setFocusable(false);
-        gerar.addActionListener(new botaoGerar());
+        botaoGerar = new JButton("Gerar Matriz");
+        botaoGerar.setFocusable(false);
+        botaoGerar.addActionListener(new botaoGerar());
         
-        abrirArquivo = new JButton("Abrir Arquivo");
-        abrirArquivo.setFocusable(false);
-        abrirArquivo.addActionListener(new botaoAbrirArquivo());
+        botaoAbrirArquivo = new JButton("Abrir Arquivo");
+        botaoAbrirArquivo.setFocusable(false);
+        botaoAbrirArquivo.addActionListener(new botaoAbrirArquivo());
 
         spinnerColunas = new JSpinner();
         spinnerColunas.setValue(5);
@@ -113,11 +114,11 @@ public final class Interface extends JFrame{
 
         textVetorInicial = new JTextField();
         textVetorInicial.setText("0.2, 1.7, 5, 3.6");
-        //textVetorInicial.setVisible(false);
+        textVetorInicial.setEnabled(false);
 
         textErro = new JTextField();
         textErro.setText("0.005");
-        //textErro.setVisible(false);
+        textErro.setEnabled(false);
      
         gauss = new JRadioButton("Gauss");
         gauss.setSelected(true);
@@ -125,12 +126,12 @@ public final class Interface extends JFrame{
         gauss.setActionCommand("Gauss");
 
         lu = new JRadioButton("LU");
-        //lu.setSelected(true);
+        lu.setSelected(true);
         lu.setMnemonic(KeyEvent.VK_B);
         lu.setActionCommand("LU");
 
         cholesky = new JRadioButton("Cholesky");
-        //cholesky.setSelected(true);
+        cholesky.setSelected(true);
         cholesky.setMnemonic(KeyEvent.VK_B);
         cholesky.setActionCommand("Cholesky");
         
@@ -138,25 +139,27 @@ public final class Interface extends JFrame{
         //jacobi.setSelected(true);
         jacobi.setMnemonic(KeyEvent.VK_B);
         jacobi.setActionCommand("Jacobi");
+        jacobi.addActionListener(new metodoIterativoSelecionado());
 
         seidel = new JRadioButton("Seidel");
         //seidel.setSelected(true);
         seidel.setMnemonic(KeyEvent.VK_B);
         seidel.setActionCommand("Seidel");
+        seidel.addActionListener(new metodoIterativoSelecionado());
                 
         painelConfiguracoes.add(new JLabel("Linhas: "));
         painelConfiguracoes.add(spinnerLinhas);
         painelConfiguracoes.add(new JLabel("Colunas:"));
         painelConfiguracoes.add(spinnerColunas);
-        painelConfiguracoes.add(abrirArquivo);
-        painelConfiguracoes.add(gerar);
+        painelConfiguracoes.add(botaoAbrirArquivo);
+        painelConfiguracoes.add(botaoGerar);
         painelConfiguracoes.add(new JLabel("Metodo: "));
         painelConfiguracoes.add(gauss);
         painelConfiguracoes.add(lu);
         painelConfiguracoes.add(cholesky);
         painelConfiguracoes.add(jacobi);
         painelConfiguracoes.add(seidel);
-        painelConfiguracoes.add(iniciar);
+        painelConfiguracoes.add(botaoIniciar);
         painelConfiguracoes.add(new JLabel("Erro: "));
         painelConfiguracoes.add(textErro);
         painelConfiguracoes.add(new JLabel("Vetor: "));
@@ -164,7 +167,7 @@ public final class Interface extends JFrame{
         //painelConfiguracoes.add(labelVazio);
     }
 
-   /* classe para o evento que cuida do bota iniciar
+   /* classe para o evento que cuida do bota botaoIniciar
    * @param void
    * @return void
    */
@@ -186,15 +189,15 @@ public final class Interface extends JFrame{
             String stringIn = textVetorInicial.getText();
             StringTokenizer tokens =new StringTokenizer(stringIn,",");//separa os tokens por virgulas
             int y = 0;
-            vetorAuxiliar = new double[linhas];
+            vetorAuxiliar = new double[tokens.countTokens()];
             while(tokens.hasMoreElements())
             {
                 vetorAuxiliar[y++]= Double.parseDouble(tokens.nextToken());
             }
 
-            if (matrizPrincipal.getSolucao().compareTo("SLCI") == 0) {
+            if (matrizPrincipal.getSolucao().compareTo("Indeterminado") == 0) {
                 mensagemInfinitasSolucoes();
-            } else if (matrizPrincipal.getSolucao().compareTo("SLI") == 0) {
+            } else if (matrizPrincipal.getSolucao().compareTo("Incompativel") == 0) {
                 mensagemSemSolucao();
             } else {
                 solucao = new ResolucaoSistemas(matrizPrincipal);
@@ -205,29 +208,29 @@ public final class Interface extends JFrame{
                 if (gauss.isSelected()) {
                 	resultado = solucao.executar("Gauss");
 	                relatorioFinal.escreveRelatorio(resultado, "Eliminação de Gauss");	
-	            	adicionarResultados(resultado,0);
-	            }
-	            if (cholesky.isSelected()) {
-                	resultado = solucao.executar("Cholesky");
-                	relatorioFinal.escreveRelatorio(resultado, "Fatorção de Cholesky");
+                    adicionarResultados(resultado,0);
+                }
+                if (lu.isSelected()) {
+                    resultado = solucao.executar("LU");
+                    relatorioFinal.escreveRelatorio(resultado, "Fatoração LU");
                 	adicionarResultados(resultado,1);
                 }
-	            if (lu.isSelected()) {
-	            	resultado = solucao.executar("LU");
-	            	relatorioFinal.escreveRelatorio(resultado, "Fatoração LU");
-	            	adicionarResultados(resultado,2);
-	            }
+                if (cholesky.isSelected()) {
+                	resultado = solucao.executar("Cholesky");
+                	relatorioFinal.escreveRelatorio(resultado, "Fatorção de Cholesky");
+                	adicionarResultados(resultado,2);
+                }
                 if (jacobi.isSelected()) {
-                	resultado = solucao.executar("Jacobi",vetorAuxiliar,erro);
+                    resultado = solucao.executar("Jacobi",vetorAuxiliar,erro);
                 	relatorioFinal.escreveRelatorio(resultado, "Método de Gauss-Jacobi");
-                	adicionarResultados(resultado,3);
+                    adicionarResultados(resultado,3);
                 }
                 if (seidel.isSelected()) {
-                	resultado = solucao.executar("Seidel",vetorAuxiliar,erro);
+                    resultado = solucao.executar("Seidel",vetorAuxiliar,erro);
                 	relatorioFinal.escreveRelatorio(resultado, "Método de Gauss-Seidel");
-                	adicionarResultados(resultado,4);
+                    adicionarResultados(resultado,4);
                 }
-	            
+                
                 relatorioFinal.encerrar();
 	                
                 frameResultados.getContentPane().add(painelResultados, BorderLayout.CENTER);
@@ -235,7 +238,11 @@ public final class Interface extends JFrame{
                 frameResultados.setVisible(true);//torna visivel a interface
 
             }
-            iniciar.setVisible(false);//ja mostrou o resultado, necessario configurar outra matriz para iniciar novamente
+            jacobi.setSelected(false);//o usuario é obrigado a selecionar novamente
+            seidel.setSelected(false);//desse jeito o usuario diminui as chances de esquecer de digitar o vetor e o erro
+            textErro.setEnabled(false);
+            textVetorInicial.setEnabled(false);
+            botaoIniciar.setEnabled(false);//ja mostrou o resultado, necessario configurar outra matriz para botaoIniciar novamente
             
         }
         
@@ -253,31 +260,33 @@ public final class Interface extends JFrame{
             limparResultados();
         }
 
-        /* metodo que cria os campos vazios dos resultados
+        /* metodo que cria os campos vazios dos labelResultados
          * @param void
          * @return void
          */
         private void limparResultados() {
-            resultados = new JLabel[(linhas+1) * 5];//cria um vetor de campos de texto do tamanho da matriz
-            resultados[0] = new JLabel();
-            resultados[0].setText("  Gauss ");
-            painelResultados.add(resultados[0]);//adiciona o campo de texto no painel das jogadas
-            resultados[1] = new JLabel();
-            resultados[1].setText("Cholesky");
-            painelResultados.add(resultados[1]);//adiciona o campo de texto no painel das jogadas
-            resultados[2] = new JLabel();
-            resultados[2].setText("    LU  ");
-            painelResultados.add(resultados[2]);//adiciona o campo de texto no painel das jogadas
-            resultados[3] = new JLabel();
-            resultados[3].setText(" Jacobi ");
-            painelResultados.add(resultados[3]);//adiciona o campo de texto no painel das jogadas
-            resultados[4] = new JLabel();
-            resultados[4].setText(" Seidel ");
-            painelResultados.add(resultados[4]);//adiciona o campo de texto no painel das jogadas
-            for (int i = 5; i < (linhas+1) * 5; i++) {//6 e a quantidade de metodos e linhas e a quantidade d resultados X's
-                resultados[i] = new JLabel();
-                resultados[i].setText("00000000");
-                painelResultados.add(resultados[i]);//adiciona o campo de texto no painel das jogadas
+            labelResultados = new JLabel[(linhas+1) * 5];//cria um vetor de campos de texto do tamanho da matriz
+            labelResultados[0] = new JLabel();
+            labelResultados[0].setText("  Gauss ");
+            painelResultados.add(labelResultados[0]);//adiciona o campo de texto no painel das jogadas
+            labelResultados[1] = new JLabel();
+            labelResultados[1].setText("    LU  ");
+            painelResultados.add(labelResultados[1]);//adiciona o campo de texto no painel das jogadas
+            labelResultados[2] = new JLabel();
+            labelResultados[2].setText("Cholesky");
+            painelResultados.add(labelResultados[2]);//adiciona o campo de texto no painel das jogadas
+            labelResultados[3] = new JLabel();
+            labelResultados[3].setText(" Jacobi ");
+            painelResultados.add(labelResultados[3]);//adiciona o campo de texto no painel das jogadas
+            labelResultados[4] = new JLabel();
+            labelResultados[4].setText(" Seidel ");
+            painelResultados.add(labelResultados[4]);//adiciona o campo de texto no painel das jogadas
+            for (int i = 5; i < (linhas+1) * 5; i++) {//6 e a quantidade de metodos e linhas e a quantidade d labelResultados X's
+                labelResultados[i] = new JLabel();
+                labelResultados[i].setHorizontalTextPosition(JLabel.CENTER);
+                labelResultados[i].setVerticalTextPosition(JLabel.CENTER);
+                labelResultados[i].setText("00000000");
+                painelResultados.add(labelResultados[i]);//adiciona o campo de texto no painel das jogadas
             }
         }
         
@@ -292,7 +301,9 @@ public final class Interface extends JFrame{
             for (int i = numeroMetodo+5; i < (linhas+1)*5; i+=5) {
                 aux = vetor[j];j++;
                 formatado = format.format(aux);
-                resultados[i].setText(formatado);
+                labelResultados[i].setHorizontalTextPosition(JLabel.CENTER);
+                labelResultados[i].setVerticalTextPosition(JLabel.CENTER);
+                labelResultados[i].setText(formatado);
             }
             
         }
@@ -300,7 +311,7 @@ public final class Interface extends JFrame{
     
   
 
-   /* classe para o evento que cuida do botao gerar
+   /* classe para o evento que cuida do botao botaoGerar
    * @param void
    * @return void
    */
@@ -324,13 +335,13 @@ public final class Interface extends JFrame{
             frameMatriz.getContentPane().add(painelMatriz, BorderLayout.CENTER);
             frameMatriz.pack(); //ajusta o tamanho da janela ao dos componentes
             frameMatriz.setVisible(true);//torna visivel a interface
-            iniciar.setVisible(true);
+            botaoIniciar.setEnabled(true);
                         
         }
     }
     
     
-   /* classe para o evento que cuida do botao abrirArquivo
+   /* classe para o evento que cuida do botao botaoAbrirArquivo
    * @param void
    * @return void
    */
@@ -358,6 +369,19 @@ public final class Interface extends JFrame{
         }
     }
     
+    /* classe para o evento que cuida do botao botaoAbrirArquivo
+   * @param void
+   * @return void
+   */
+    public class metodoIterativoSelecionado implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            textVetorInicial.setEnabled(true);
+            textErro.setEnabled(true);
+        }
+    }
+    
     public void lerArquivo(File arquivo) throws FileNotFoundException, IOException {
         int y=0,z=0;
         BufferedReader bufferEntrada;
@@ -382,7 +406,7 @@ public final class Interface extends JFrame{
         }
         matrizPrincipal.setDimensao(linhas, colunas);
         matrizPrincipal.setMatrizAmpliada(matrizArquivo);//depois de todos os valores armazenados ma matriz temporaria m, setar a matriz no objeto Matriz
-        gerar.doClick();//depois de colocado o valor de cada posicao da matriz ele continua como se fosse um clique no botao gerarmatriz
+        botaoGerar.doClick();//depois de colocado o valor de cada posicao da matriz ele continua como se fosse um clique no botao gerarmatriz
     }
     
      /* metodo que abre uma mensagem indicando que nao ha solucao

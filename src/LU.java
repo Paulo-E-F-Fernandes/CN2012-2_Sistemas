@@ -14,7 +14,7 @@ public class LU {
     private int linhas;
     private int colunas;
     private Matriz temp;
-    private ArrayList termosDaMatrizL = new ArrayList();
+    private ArrayList<Double> termosDaMatrizL = new ArrayList<Double>();
 
     /* metodo padrao de todos os metodos numericos
      * @param Matriz pivo
@@ -74,7 +74,7 @@ public class LU {
                     matriz[j][i]=1;//diagonal principal deve ser unitaria
                 }
                 else if (i<j) {
-                    matriz[j][i]=(double) termosDaMatrizL.get(k++);
+                    matriz[j][i]=termosDaMatrizL.get(k++);//matriz trinagular inferior vai conter numeros pegos durante o calculo da matriz U
                 }
                 else {
                     matriz[j][i]=0;//matriz triangular superior deve ser zerada isso acontece quando i<j
