@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,7 @@ public class GerenciaArquivo {
 	public GerenciaArquivo(int tamanho) {
 		this.tamanho = tamanho;
 		try {
+			new File(System.getProperty("user.home")+"/CNRelatorio/").mkdir();
 			this.relatorioSaida = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/CNRelatorio/"+this.geraNome()));
 		} catch (IOException e) {
 			e.printStackTrace();
