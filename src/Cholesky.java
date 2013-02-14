@@ -1,7 +1,4 @@
 /**
- *@see http://introcs.cs.princeton.edu/java/95linear/Cholesky.java.html
- * 
- * 
  * @author angelin
  */
 public class Cholesky {
@@ -14,7 +11,11 @@ public class Cholesky {
     private double[][] LT;
     private double[] y;//L*y=b
     private double[] x;//LT*x=y
-    
+
+    /* metodo que executa o cholesky
+     * @param Matriz m
+     * @return double[] reposta
+     */
     public double[] executar(Matriz m) {
         matrizTemp = m;
         alocarVetores();
@@ -36,8 +37,11 @@ public class Cholesky {
         return resultado;//se entrar em algum if entao vai devolver o vetor zerado
     }
     
-    //teste de simetria
-    public boolean ehSimetrica(double[][] matriz){
+    /* metodo que verifica se uma matriz e simetrica
+     * @param double[][] matriz
+     * @return boolena ehSimetrica
+     */
+     public boolean ehSimetrica(double[][] matriz){
         for(int i = 0,j = matriz.length -1 ; i < matriz.length ; i++,j--){
             if(matriz[i][j] != matriz[j][i]){
                 return false;
@@ -46,7 +50,10 @@ public class Cholesky {
         return true;
     }
     
-    //definir se matrizTemp  eé positiva definida
+    /* metodo que avalia se uma matriz tem sua diagonal principal positiva
+     * @param double[][] matriz
+     * @return boolean ehPositivaDefinida
+     */
     public boolean ehPositivaDefinida(double[][] a){
 	double[][] u = a;
 	double[][] m = new double[a.length][a[0].length];
@@ -67,7 +74,10 @@ public class Cholesky {
 	return true;    
 }
     
-    //seta identidade para matrizTemp
+    /* metodo que retorna a matriz identidade de uma matriz
+     * @param double matriz[][]
+     * @return double[][] matrizIdentidade
+     */
     public double[][] setIdentidadeToMatriz(double[][] matriz){
         for(int index = 0 ; index < matriz.length ; index++){
             for(int j = 0; j < matriz[0].length ; j++ ){
@@ -82,7 +92,10 @@ public class Cholesky {
     return matriz;
 }
     
-    //multiplicar raizes
+    /* metodo que multiplica duas matrizes
+     * @param double[][] double[][] matrizes
+     * @param double[][] matrizResposta
+     */
     public double[][] multiplicarMatrizes(double[][] multiplicadora,double[][] multiplicando){
 	if(multiplicadora[0].length != multiplicando.length){
 		System.err.println("O tamanho das matrizes não são compatíveis");
@@ -107,8 +120,10 @@ public class Cholesky {
 
     
 
-    //METODO CHOLESKY
-    
+/* metodo que calcula a matriz triangular inferior L
+ * @param double[][] matriz
+ * @return double[][] matriz triangular inderior
+ */
     public double[][] cholesky(double[][] matriz) {
         double temp[][] = new double[linhas][colunas];
         for (int i = 0; i < linhas; i++)  {
@@ -171,7 +186,11 @@ public class Cholesky {
         }
         return resultado;
     }
-    
+
+    /* metodo que faz a alocação das variaveis
+     * @param void
+     * @return void
+     */
         private void alocarVetores() {
         linhas = matrizTemp.linhas;
         colunas = matrizTemp.colunas-1;//menos 1 pois o nº de colunas é da matrizTemp ampliada

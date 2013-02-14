@@ -1,7 +1,4 @@
 /**
- * @see http://introcs.cs.princeton.edu/java/95linear/
- * @see https://sites.google.com/site/programacaocpp/calculo-numerico/eliminacao-de-gauss-com-pivoteamento-parcial
- * 
  * @author pargles
  * @version 2.0
  */
@@ -59,6 +56,10 @@ public class Gauss {
             }
         }
     }
+    /* metodo que troca as linhas de uma matriz
+     * @param int linha1 int linha2
+     * @return void
+     */
     private void TrocarLinhas(int linha1, int linha2) {
         double aux = 0.00;
         // Troca elementos das linhas na matriz: a
@@ -72,7 +73,11 @@ public class Gauss {
         termosIndependentes[linha1] = termosIndependentes[linha2];
         termosIndependentes[linha2] = aux;
     }
-    
+
+    /* metodo que calcula o resultado atraves da matriz resultante
+     * @param void
+     * @param void
+     */
     private void calcularResultado() {
         linhas--;    // para facilitar os cáculos já que o indece de matrizes em java começam em zero!
         resultados[linhas] = termosIndependentes[linhas] / tempMat[linhas][linhas];//calcula o ultimo x, ja que o resultado e praticamente direto
