@@ -43,27 +43,6 @@ public class Matriz {
         return identidade;
     }
 
-
-    /* calcula o determinante de uma matrizAmpliada 2x2
-     * exemplo parametro {{2,2},{2,2}}
-     * @param int mat2x2
-     * @return int determinante
-     */
-    public int det2x2(int[][]mat2x2)
-    {
-        return mat2x2[0][0]*mat2x2[1][1]-mat2x2[0][1]*mat2x2[1][0];
-    }
-
-
-    /* metodo que imprime no terminal a matrizAmpliada ampliada
-     * @param void
-     * @return
-     */
-    public void printaMatrizAmpliada()
-    {
-
-    }
-
     /* metodo que seta a dimensao da matrizAmpliada
      * @param int linhas e colunas
      * @return void

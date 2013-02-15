@@ -62,7 +62,11 @@ public class LU {
         }
         return matriz;
     }
-    
+
+    /* metodo que calcula a matriz triangular inferior de uma matriz
+     * @param double[][] matriz de entrada
+     * @return double[][] matriz triangular inferior
+     */
     public double[][] calcularTriangularInferior(double[][] matriz)
     {
         int k=0;
@@ -114,7 +118,10 @@ public class LU {
         return resultado;
     }
     
-  
+  /* metodo que troca as linhas de uma matriz
+   * @param int linhas
+   * @return void
+   */
     private void TrocarLinhas(int linha1, int linha2,double[][] matriz) {
         double aux = 0.00;
         // Troca elementos das linhas na matriz: a

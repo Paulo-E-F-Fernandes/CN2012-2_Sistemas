@@ -20,12 +20,12 @@ public class Cholesky {
         matrizTemp = m;
         alocarVetores();
         if(!ehSimetrica(A)) {
-        	System.out.println("\n--Fatorção de Cholesky--");
+        	//System.out.println("\n--Fatorção de Cholesky--");
             System.out.println("Matriz não é simétrica para o método de Cholesky");
             return this.resultado;
         }
         else if (!ehPositivaDefinida(A)){
-        	System.out.println("\n--Fatorção de Cholesky--");
+        	//System.out.println("\n--Fatorção de Cholesky--");
             System.out.println("Matriz não é positiva definada para o método de Cholesky");
             return this.resultado;
         }

@@ -117,7 +117,7 @@ public final class Interface extends JFrame{
         textVetorInicial.setEnabled(false);
 
         textErro = new JTextField();
-        textErro.setText("0.005");
+        textErro.setText("0.05");
         textErro.setEnabled(false);
      
         gauss = new JRadioButton("Gauss");
@@ -246,7 +246,10 @@ public final class Interface extends JFrame{
             
         }
         
-
+        /* metodo que preenche a tela de resultado
+         * @param void
+         * @return void
+         */
         private void criarTelaResultados() {
             Dimension boardSize = new Dimension(400, 200);
             frameResultados = new JFrame("Resultados");
@@ -285,7 +288,7 @@ public final class Interface extends JFrame{
                 labelResultados[i] = new JLabel();
                 labelResultados[i].setHorizontalTextPosition(JLabel.CENTER);
                 labelResultados[i].setVerticalTextPosition(JLabel.CENTER);
-                labelResultados[i].setText("00000000");
+                labelResultados[i].setText(";)");
                 painelResultados.add(labelResultados[i]);//adiciona o campo de texto no painel das jogadas
             }
         }
@@ -293,8 +296,8 @@ public final class Interface extends JFrame{
         private void adicionarResultados(double vetor[], int numeroMetodo)
         {
             NumberFormat format = NumberFormat.getInstance();//instancia o formatador de numeros
-            format.setMaximumFractionDigits(4);
-            format.setMaximumIntegerDigits(6);
+            format.setMaximumFractionDigits(6);
+            //format.setMaximumIntegerDigits(10);
             String formatado;//string que serve para colocar o numero formtado
             int j =0;
             Double aux;
@@ -381,7 +384,10 @@ public final class Interface extends JFrame{
             textErro.setEnabled(true);
         }
     }
-    
+
+    /* metod que le uma matriz do arquivo que deve ser no formato ".txt" ou ".csv"
+     *
+     */
     public void lerArquivo(File arquivo) throws FileNotFoundException, IOException {
         int y=0,z=0;
         BufferedReader bufferEntrada;

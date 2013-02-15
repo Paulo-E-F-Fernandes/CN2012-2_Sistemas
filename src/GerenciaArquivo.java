@@ -13,7 +13,10 @@ import java.util.Locale;
 public class GerenciaArquivo {
 	private BufferedWriter relatorioSaida;
 	int tamanho;
-	
+	/* metodo construtor da classe gerencia arquivo
+         * @param int tamanho
+         * @return void
+         */
 	public GerenciaArquivo(int tamanho) {
 		this.tamanho = tamanho;
 		try {
@@ -23,7 +26,11 @@ public class GerenciaArquivo {
 			e.printStackTrace();
 		}
 	}
-	
+
+        /* metodo que grava no arquivo o resultado dos metodos
+         * @param double[] resultado String metodo
+         * @return void
+         */
 	public void escreveRelatorio(double[] resultado, String nomeMetodo) {
 		int i;
 		
@@ -49,7 +56,11 @@ public class GerenciaArquivo {
 		}
     	
 	}
-	
+
+        /* metodo que fecha o arquivo contendo o relatorio
+         * @param void
+         * @return void
+         */
 	public void encerrar() {
 		try {
 			this.relatorioSaida.close();
@@ -57,7 +68,11 @@ public class GerenciaArquivo {
 			e.printStackTrace();
 		}
 	}
-    
+
+        /* metod que gera um nome do arquivo de acordo com o dia mes e ano
+         * @param void
+         * @return String nome do arquivo
+         */
 	private String geraNome() {
 		Locale locale = new Locale("pt","BR");
         GregorianCalendar calendar = new GregorianCalendar();
